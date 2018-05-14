@@ -1,0 +1,63 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.title {
+    text-align: center;
+}
+
+body {
+    background: #ccc;
+    font-family: "Roboto Condensed";
+}
+
+.left-side {
+    display: inline-block;
+    /* width: 220px; */
+    border: 1px solid #ccc;
+}
+
+.poster {
+    /* width: 200px; */
+    height: 300px;
+    margin-bottom: 15px;
+}
+
+.items-contaner {
+    /* width: 500px; */
+    /* height: 300px; */
+    display: inline-block;
+    border: 1px solid #ccc;
+    vertical-align: top;
+    margin-left: 20px;
+    padding: 10px;
+}
+
+.item {
+    margin-bottom: 0.5rem;
+}
+
+.main-wrap {
+    /* width: 1000px; */
+    margin: 30px auto;
+    background: #eee;
+    padding: 20px;
+    position: relative;
+}
+
+#btn-download,
+.myBtn {
+    display: block;
+    width: 100%;
+    min-width: 50px;
+    margin: 10px auto;
+}
+
+.readOut {
+    margin-top: 10px;
+    padding: 30px;
+    border: 1px solid #ccc;
+    display: none;
+}
