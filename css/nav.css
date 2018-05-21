@@ -1,0 +1,37 @@
+header {
+    background: #333;
+    color: #eee;
+    font-family: "Roboto Condensed";
+    padding: 10px;
+}
+
+.title {
+    text-align: center;
+}
+
+#btn {
+    position: absolute;
+    right: 15px;
+    top: 10px;
+}
+
+.form-group .col-form-label {
+    float: left;
+}
+
+.addCatContaner {
+    display: flex;
+    justify-content: center;
+    flex-flow: row wrap;
+}
+
+.addCatBtn {
+    display: inline-block;
+    /* vertical-align: top; */
+    padding: 10px 20px;
+}
+
+.tCat {
+    margin: 10px 5px;
+    display: inline-table;
+}

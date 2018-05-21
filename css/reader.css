@@ -1,0 +1,21 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.main-wrapper {
+    background: #17202A;
+}
+
+.chapters {
+    width: 300px;
+    height: 100vh;
+    display: inline-block;
+}
+
+.content {
+    height: 100vh;
+    display: inline-block;
+    background: #eee;
+}
