@@ -1,5 +1,5 @@
 
-document.getElementById('btn').addEventListener('click', function () {
+document.getElementById('btnAdd').addEventListener('click', function () {
     var ID = function () {
         return '_' + Math.random().toString(36).substr(2, 9);
     };

@@ -67,6 +67,31 @@ req.onload = function () {
 }
 req.send(null)
 
-// var test = document.getElementById('test');
-// console.log(test.innerText.lastIndexOf(','));
-// test.innerText = test.innerText.slice(0, test.innerText.lastIndexOf(','));
+var str1 = $('#myText').html();
+var str2 = str1.split(' ');
+
+
+for (var key in str2) {
+  if (str2[key] === '<h1>Chapter') {
+    str2[key] = str2[key] + ' ' + str2[++key];
+    console.log(str2[--key]);
+    // $('#myText > h1').css('color', 'red');
+    // document.getElementById('myChapters').innerHTML += '<a href="#">' + str2[key].getElementsByTagName('h1')[key].innerHTML +'</a>'
+    str2.splice(key, 1);
+  }
+}
+
+var myTextH1 = document.querySelectorAll('#myText > h1');
+for (var i = 0; i < myTextH1.length; i++) {
+  myTextH1[i].style.color = 'red';
+  document.getElementById('myChapters').innerHTML += '<a href="#">' + myTextH1[i].innerHTML + '</a>'
+}
+
+console.log(str2);
+
+// if (str1.indexOf('Chapter') !== false) {
+//   console.log(str1.indexOf('Chapter'));
+//   $('#myText > h1').css('color', 'red');
+// }
+
+// $('#myText').html(str2);

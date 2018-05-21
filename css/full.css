@@ -47,12 +47,10 @@ body {
     position: relative;
 }
 
-#btn-download,
 .myBtn {
-    display: block;
     width: 100%;
-    min-width: 50px;
-    margin: 10px auto;
+    margin: 10px 0!important;
+    border: none!important;
 }
 
 .readOut {
