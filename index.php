@@ -10,15 +10,15 @@
             }
             $myCat[] = $row;
         }
-        for ($i = 0; $i < count($myCat); $i++ ) {
-            if ($myCat[$i]['b_category'] === $myCat[$i]['b_category']) {
-                unset($myCat[++$i]);
-                ++$i;
-            }
-        }
-        echo '<pre>';
-        print_r($myCat);
-        echo '</pre>';
+        // for ($i = 0; $i < count($myCat); $i++ ) {
+        //     if ($myCat[$i]['b_category'] === $myCat[$i]['b_category']) {
+        //         unset($myCat[++$i]);
+        //         ++$i;
+        //     }
+        // }
+        // echo '<pre>';
+        // print_r($myCat);
+        // echo '</pre>';
         $myCatJson = json_encode($myCat, JSON_UNESCAPED_UNICODE);
     } else {
         echo "0 results categories";
@@ -44,18 +44,7 @@
   <div class="main-contaner">
     <div class="left-sidebar col-md-2">
         <ul class="list-group" id="left-sidebar-categories">
-            <!-- <li class="list-group-item d-flex justify-content-between align-items-center">
-                Cras justo odio
-                <span class="badge badge-primary badge-pill">14</span>
-            </li>
-            <li class="list-group-item d-flex justify-content-between align-items-center">
-                Dapibus ac facilisis in
-                <span class="badge badge-primary badge-pill">2</span>
-            </li>
-            <li class="list-group-item d-flex justify-content-between align-items-center">
-                Morbi leo risus
-                <span class="badge badge-primary badge-pill">1</span>
-            </li> -->
+            <!-- auto generate -->
         </ul>
     </div>
     <div class="card-contaner col-md-9">
@@ -119,19 +108,33 @@
     <script type="text/javascript">
         var lsc = document.getElementById('left-sidebar-categories');
         var categories = <?php echo $myCatJson ?>;
-        var catItem = [];
+        // var catItem = [];
         console.log(categories);
-        for (var i = 0; i < categories.length; i++) {
-            catItem[i] = document.createElement('li');
-            catItem[i].classList.add('list-group-item', 'd-flex', 'justify-content-between', 'align-items-center');
-            catItem[i].innerHTML = `
-            ` + categories[i]['b_category'] + `
-            <span class="badge badge-primary badge-pill">14</span>`;
-            lsc.appendChild(catItem[i]);
-            // if (catItem[i].innerHTML === catItem[++i]) {
-            //     catItem[i].remove();
+        var countCatArr = [];
+        function search(nameKey, myArray){
+            for (var i in myArray) {
+                if (myArray[i]['b_category'] === nameKey) {
+                    //return myArray[i];
+                    countCatArr.push(myArray[i]);
+                }
+            }
+            return countCatArr;
+        }
+        //var resultObject = search("Фантастика", categories);
+        console.log(search("Фантастика", categories).length);
+
+        for (var key in categories) {
+            var countCat = search(categories[key]['b_category'], categories).length;
+            lsc.innerHTML += `
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+                ` + categories[key]['b_category'] + `
+                <span class="badge badge-primary badge-pill">` + countCat + `</span>
+            </li>`;
+            // if (countCat > 1) {
+            //     document.getElementsByClassName('list-group-item')[key].remove();
             // }
         }
+        //lsc.innerHTML += 'text';
 
     </script>
 </body>

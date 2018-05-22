@@ -7,7 +7,7 @@ req.onload = function () {
     if (this.status === 200) {
       // console.log([this.response])
       var myData = JSON.parse(this.response)
-      console.log(myData);
+      //console.log(myData);
       let divContaner = document.getElementsByClassName('card-contaner');
 
       for (var key in myData) {
@@ -63,7 +63,7 @@ req.onload = function () {
         // listGroup[key].appendChild(linkMore[key])
 
         //******************************************** */
-        console.log(myData[key].b_poster);
+        //console.log(myData[key].b_poster);
         let horizontalCard = [];
         horizontalCard[key] = document.createElement('div');
         horizontalCard[key].classList.add('mycard', 'col-md-12');
@@ -93,7 +93,7 @@ var str2 = str1.split(' ');
 for (var key in str2) {
   if (str2[key] === '<h1>Chapter') {
     str2[key] = str2[key] + ' ' + str2[++key];
-    console.log(str2[--key]);
+    //console.log(str2[--key]);
     // $('#myText > h1').css('color', 'red');
     // document.getElementById('myChapters').innerHTML += '<a href="#">' + str2[key].getElementsByTagName('h1')[key].innerHTML +'</a>'
     str2.splice(key, 1);
@@ -106,7 +106,7 @@ for (var i = 0; i < myTextH1.length; i++) {
   document.getElementById('myChapters').innerHTML += '<a href="#">' + myTextH1[i].innerHTML + '</a>'
 }
 
-console.log(str2);
+//console.log(str2);
 
 // if (str1.indexOf('Chapter') !== false) {
 //   console.log(str1.indexOf('Chapter'));
