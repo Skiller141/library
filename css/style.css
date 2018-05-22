@@ -1,3 +1,10 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* 
 .card {
     min-height: 600px;
 }
@@ -8,4 +15,57 @@
     left: -6px;
     width: 100%;
     margin-top: 20px;
+} */
+
+.main-contaner {
+    display: table;
+    margin: 0 auto;
+}
+
+.left-sidebar {
+    display: inline-block;
+    margin: 15px 15px;
+}
+
+.card-contaner {
+    display: inline-block;
+    vertical-align: top;
+}
+
+.mycard {
+    border: 1px solid #ccc;
+    padding: 0;
+    margin: 15px 0;
+    -webkit-box-shadow: 0px 0px 5px 1px rgba(159, 160, 168, 1);
+    -moz-box-shadow: 0px 0px 5px 1px rgba(159, 160, 168, 1);
+    box-shadow: 0px 0px 5px 1px rgba(159, 160, 168, 1);
+}
+
+.mycard>.poster {
+    /* background: url("https://s4-goods.ozstatic.by/1000/56/24/1/1024056_0.jpg");
+    background-size: 100% 100%; */
+    display: inline-block;
+    height: 300px;
+    /* width: 200px; */
+    /* border: 1px solid #ccc; */
+    margin: 10px;
+    max-width: 200px;
+}
+
+.mycard>.short-info {
+    display: inline-block;
+    /* border: 1px solid #ccc; */
+    /* width: 700px; */
+    height: 100% !important;
+    vertical-align: top;
+    margin: 0 auto;
+}
+
+.mycard>.short-info>.item {
+    border-bottom: 1px solid #ccc;
+    padding: 10px 20px;
+}
+
+.mycard>.short-info>.item>.icons {
+    margin-right: 10px;
 }

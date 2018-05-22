@@ -1,4 +1,29 @@
 <?php require_once('functions.php');?>
+<?php
+    require_once('connect.php');
+    $sql = "SELECT * FROM category";
+    $result = mysqli_query($conn, $sql);
+    if (mysqli_num_rows($result) > 0) {
+        while($row = mysqli_fetch_array($result)) {
+            for ($i = 0; $i < 8; $i++ ) {
+                unset($row[$i]);
+            }
+            $myCat[] = $row;
+        }
+        for ($i = 0; $i < count($myCat); $i++ ) {
+            if ($myCat[$i]['b_category'] === $myCat[$i]['b_category']) {
+                unset($myCat[++$i]);
+                ++$i;
+            }
+        }
+        echo '<pre>';
+        print_r($myCat);
+        echo '</pre>';
+        $myCatJson = json_encode($myCat, JSON_UNESCAPED_UNICODE);
+    } else {
+        echo "0 results categories";
+    }
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -13,8 +38,29 @@
 </head>
 <body>
     <?php require_once('header.php') ?>
-  <div class="card-contaner d-flex justify-content-center">
-    <!-- auto generate -->
+  <!-- <div class="card-contaner d-flex justify-content-center">
+
+  </div> -->
+  <div class="main-contaner">
+    <div class="left-sidebar col-md-2">
+        <ul class="list-group" id="left-sidebar-categories">
+            <!-- <li class="list-group-item d-flex justify-content-between align-items-center">
+                Cras justo odio
+                <span class="badge badge-primary badge-pill">14</span>
+            </li>
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+                Dapibus ac facilisis in
+                <span class="badge badge-primary badge-pill">2</span>
+            </li>
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+                Morbi leo risus
+                <span class="badge badge-primary badge-pill">1</span>
+            </li> -->
+        </ul>
+    </div>
+    <div class="card-contaner col-md-9">
+        <!-- auto generate -->
+    </div>
   </div>
 
   <div id="myChapters"></div>
@@ -69,6 +115,24 @@
     <script type="text/javascript" src="js/bootstrap.min.js"></script>
     <!-- MDB core JavaScript -->
     <script type="text/javascript" src="js/mdb.min.js"></script>
-	<script src="js/main.js"></script>
+    <script src="js/main.js"></script>
+    <script type="text/javascript">
+        var lsc = document.getElementById('left-sidebar-categories');
+        var categories = <?php echo $myCatJson ?>;
+        var catItem = [];
+        console.log(categories);
+        for (var i = 0; i < categories.length; i++) {
+            catItem[i] = document.createElement('li');
+            catItem[i].classList.add('list-group-item', 'd-flex', 'justify-content-between', 'align-items-center');
+            catItem[i].innerHTML = `
+            ` + categories[i]['b_category'] + `
+            <span class="badge badge-primary badge-pill">14</span>`;
+            lsc.appendChild(catItem[i]);
+            // if (catItem[i].innerHTML === catItem[++i]) {
+            //     catItem[i].remove();
+            // }
+        }
+
+    </script>
 </body>
 </html>
