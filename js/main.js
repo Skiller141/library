@@ -76,7 +76,7 @@ req.onload = function () {
               <div class="item"><i class="fa fa-calendar icons" aria-hidden="true"></i><b>Год:</b> ` + myData[key].b_year + `</div>
               <div class="item"><i class="fa fa-eye icons" aria-hidden="true"></i><b>Серия:</b> Автостопом по Галактике</div>
               <div class="item"><i class="fa fa-file-text-o icons" aria-hidden="true"></i><b>Описание:</b> ` + myData[key].b_description.slice(0, 255) + '...' + `</div>
-              <a href="#" class="btn btn-success float-right">Подробнее</a>
+              <a href="full.php?id=` + myData[key].id + `" class="btn btn-success float-right">Подробнее</a>
           </div>`;
         divContaner[0].appendChild(horizontalCard[key]);
 
@@ -106,11 +106,25 @@ for (var i = 0; i < myTextH1.length; i++) {
   document.getElementById('myChapters').innerHTML += '<a href="#">' + myTextH1[i].innerHTML + '</a>'
 }
 
-//console.log(str2);
+var arr = ['one', 'two', 'three', 'two', 'six'];
+arr.forEach((item, i, arr) => {
+  console.log(item);
+});
 
-// if (str1.indexOf('Chapter') !== false) {
-//   console.log(str1.indexOf('Chapter'));
-//   $('#myText > h1').css('color', 'red');
-// }
+var filter = arr.filter((item, i , arr) => {
+  return item.length > 3;
+});
+console.log(filter);
 
-// $('#myText').html(str2);
+var map = arr.map((item, i, arr) => {
+  if (item === 'one'){
+    return item + ' hundred';
+  }
+  return item + ' hundreds';
+});
+console.log(map);
+
+var reduce = arr.reduce((previousValue, currentItem) => {
+  return previousValue + ', ' + currentItem;
+});
+console.log(reduce);

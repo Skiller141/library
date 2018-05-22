@@ -108,27 +108,27 @@
     <script type="text/javascript">
         var lsc = document.getElementById('left-sidebar-categories');
         var categories = <?php echo $myCatJson ?>;
-        
-        
-        // console.log(countCat);
-        var newArr = [];
-        for(var i = 0; i < newArr.length; i++) {
-            var countCat = categories.find(option => option.b_category === 'Фантастика');
-            newArr[i] = countCat;
-        }
-        console.log(newArr);
 
-        for (var key in categories) {
-            // var countCat = categories.find(option => option.b_category === 'Фантастика');
-            // console.log(countCat);
-            // var newArr = [];
-            // newArr.push(countCat);
-            // console.log(newArr);
+        var result = categories.reduce((unique, o) => {
+            if(!unique.find(obj => obj.b_category === o.b_category)) {
+            unique.push(o);
+            }
+            return unique;
+        },[]);
+        console.log(result);
+
+        for (var key in result) {
+            var countCat = categories.reduce(function (n, option) {
+                return n + (option.b_category == result[key]['b_category']);
+            }, 0);
+
             lsc.innerHTML += `
-            <li class="list-group-item d-flex justify-content-between align-items-center">
-                ` + categories[key]['b_category'] + `
-                <span class="badge badge-primary badge-pill">` + 'countCat' + `</span>
-            </li>`;
+            <a href="category.php?cat=` + result[key]['b_category'] + `">
+                <li class="list-group-item d-flex justify-content-between align-items-center catItems">
+                    ` + result[key]['b_category'] + `
+                    <span class="badge badge-primary badge-pill">` + countCat + `</span>
+                </li>
+            </a>`;
         }
 
     </script>

@@ -69,3 +69,13 @@
 .mycard>.short-info>.item>.icons {
     margin-right: 10px;
 }
+
+.catItems {
+    transition: ease 0.3s;
+    color: #333;
+}
+
+.catItems:hover {
+    background: #1C2833;
+    color: #eee;
+}

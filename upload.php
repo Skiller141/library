@@ -15,25 +15,27 @@ if (isset($_POST['submit'])) {
 	// echo "</pre>";
 
 	$oldPath = $_FILES["uploadFile"]["tmp_name"];
-	$oldPath = iconv("utf-8", "cp936", $oldPath);
+	// $oldPath = iconv("utf-8", "cp936", $oldPath);
 	$newPath = 'uploads/'.basename($_FILES["uploadFile"]["name"]);
-	if (move_uploaded_file($oldPath, $newPath)){
-		echo 'ok';
+	if (file_exists($oldPath)) {
+		if (move_uploaded_file($oldPath, $newPath)){
+			echo 'ok';
+		}
 	}
-
-	$myfile = fopen($newPath, "r") or die("Unable to open file!");
-	$orgContent = fread($myfile, filesize($newPath));
-	fclose($myfile);
 	
-	$string = $orgContent;
-	function nl2br2($string) { 
-		$string = str_replace(array("\r\n", "\r", "\n"), "<br />", $string); 
-		return $string; 
-	} 
+	// $myfile = fopen($newPath, "r") or die("Unable to open file!");
+	// $orgContent = fread($myfile, filesize($newPath));
+	// fclose($myfile);
+	
+	// $string = $orgContent;
+	// function nl2br2($string) { 
+	// 	$string = str_replace(array("\r\n", "\r", "\n"), "<br />", $string); 
+	// 	return $string; 
+	// } 
 
-	$myNewFile = fopen("uploads/test.html", "w");
-	fwrite($myNewFile, nl2br2($string));
-	fclose($myNewFile);
+	// $myNewFile = fopen("uploads/test.html", "w");
+	// fwrite($myNewFile, nl2br2($string));
+	// fclose($myNewFile);
 
 	function insertBook() {
 		global $conn, $id, $title, $author, $year, $poster, $description, $newPath;

@@ -9,53 +9,48 @@
 }
 
 body {
-    background: #ccc;
+    background: #eee;
     font-family: "Roboto Condensed";
 }
 
-.left-side {
-    display: inline-block;
-    /* width: 220px; */
+.mycard {
     border: 1px solid #ccc;
+    padding: 0;
+    margin: 15px 0;
+    -webkit-box-shadow: 0px 0px 5px 1px rgba(159, 160, 168, 1);
+    -moz-box-shadow: 0px 0px 5px 1px rgba(159, 160, 168, 1);
+    box-shadow: 0px 0px 5px 1px rgba(159, 160, 168, 1);
 }
 
-.poster {
-    /* width: 200px; */
+.mycard .poster {
+    /* background: url("https://s4-goods.ozstatic.by/1000/56/24/1/1024056_0.jpg");
+    background-size: 100% 100%; */
+    display: inline-block;
     height: 300px;
-    margin-bottom: 15px;
-}
-
-.items-contaner {
-    /* width: 500px; */
-    /* height: 300px; */
-    display: inline-block;
-    border: 1px solid #ccc;
-    vertical-align: top;
-    margin-left: 20px;
-    padding: 10px;
-}
-
-.item {
-    margin-bottom: 0.5rem;
-}
-
-.main-wrap {
-    /* width: 1000px; */
-    margin: 30px auto;
-    background: #eee;
-    padding: 20px;
-    position: relative;
-}
-
-.myBtn {
+    /* width: 200px; */
+    /* border: 1px solid #ccc; */
+    margin: 10px;
     width: 100%;
-    margin: 10px 0!important;
-    border: none!important;
 }
 
-.readOut {
-    margin-top: 10px;
-    padding: 30px;
-    border: 1px solid #ccc;
-    display: none;
+.mycard .short-info {
+    display: inline-block;
+    /* border: 1px solid #ccc; */
+    /* width: 700px; */
+    height: 100% !important;
+    vertical-align: top;
+    margin: 0 auto;
+}
+
+.mycard .short-info .item {
+    border-bottom: 1px solid #ccc;
+    padding: 10px 20px;
+}
+
+.mycard .short-info .item .icons {
+    margin-right: 10px;
+}
+
+.mycard .myBtn {
+    width: 100%;
 }
