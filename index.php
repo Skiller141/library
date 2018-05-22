@@ -108,33 +108,28 @@
     <script type="text/javascript">
         var lsc = document.getElementById('left-sidebar-categories');
         var categories = <?php echo $myCatJson ?>;
-        // var catItem = [];
-        console.log(categories);
-        var countCatArr = [];
-        function search(nameKey, myArray){
-            for (var i in myArray) {
-                if (myArray[i]['b_category'] === nameKey) {
-                    //return myArray[i];
-                    countCatArr.push(myArray[i]);
-                }
-            }
-            return countCatArr;
+        
+        
+        // console.log(countCat);
+        var newArr = [];
+        for(var i = 0; i < newArr.length; i++) {
+            var countCat = categories.find(option => option.b_category === 'Фантастика');
+            newArr[i] = countCat;
         }
-        //var resultObject = search("Фантастика", categories);
-        console.log(search("Фантастика", categories).length);
+        console.log(newArr);
 
         for (var key in categories) {
-            var countCat = search(categories[key]['b_category'], categories).length;
+            // var countCat = categories.find(option => option.b_category === 'Фантастика');
+            // console.log(countCat);
+            // var newArr = [];
+            // newArr.push(countCat);
+            // console.log(newArr);
             lsc.innerHTML += `
             <li class="list-group-item d-flex justify-content-between align-items-center">
                 ` + categories[key]['b_category'] + `
-                <span class="badge badge-primary badge-pill">` + countCat + `</span>
+                <span class="badge badge-primary badge-pill">` + 'countCat' + `</span>
             </li>`;
-            // if (countCat > 1) {
-            //     document.getElementsByClassName('list-group-item')[key].remove();
-            // }
         }
-        //lsc.innerHTML += 'text';
 
     </script>
 </body>
