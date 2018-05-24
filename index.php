@@ -41,11 +41,13 @@
   <!-- <div class="card-contaner d-flex justify-content-center">
 
   </div> -->
+  <i class="fa fa-arrow-circle-right mt-1 ml-1" id='showArrow' aria-hidden="true"></i>
   <div class="main-contaner">
-    <div class="left-sidebar col-md-2">
+    <div class="left-sidebar col-md-2 animated fadeInLeft">
         <ul class="list-group" id="left-sidebar-categories">
             <!-- auto generate -->
         </ul>
+        <i class="fa fa-arrow-left mt-1 ml-1" id='hideArrow' aria-hidden="true"></i>
     </div>
     <div class="card-contaner col-md-9">
         <!-- auto generate -->
@@ -111,7 +113,7 @@
 
         var result = categories.reduce((unique, o) => {
             if(!unique.find(obj => obj.b_category === o.b_category)) {
-            unique.push(o);
+                unique.push(o);
             }
             return unique;
         },[]);
@@ -130,6 +132,20 @@
                 </li>
             </a>`;
         }
+
+        var hideArrow = document.getElementById('hideArrow');
+        var leftSidebar = document.getElementsByClassName('left-sidebar')[0];
+        var showArrow = document.getElementById('showArrow');
+        
+        hideArrow.addEventListener('click', () => {
+            leftSidebar.classList.replace('fadeInLeft', 'fadeOutLeft');
+            showArrow.style.display = 'block';
+        });
+
+        showArrow.addEventListener('click', function() {
+            leftSidebar.classList.replace('fadeOutLeft', 'fadeInLeft');
+            this.style.display = 'none';
+        });
 
     </script>
 </body>

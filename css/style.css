@@ -79,3 +79,22 @@
     background: #1C2833;
     color: #eee;
 }
+
+#hideArrow {
+    cursor: pointer;
+}
+
+#showArrow {
+    position: fixed;
+    top: 200px;
+    left: 0;
+    cursor: pointer;
+    display: none;
+    z-index: 1000;
+    font-size: 30px;
+    color: #A04000;
+}
+
+#showArrow:hover {
+    color: #BA4A00;
+}

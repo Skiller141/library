@@ -68,8 +68,8 @@ req.onload = function () {
         horizontalCard[key] = document.createElement('div');
         horizontalCard[key].classList.add('mycard', 'col-md-12');
         horizontalCard[key].innerHTML = `
-          <div class="poster col-md-3" style="background: url('` + myData[key].b_poster + `'); background-size: 100% 100%;"></div>
-          <div class="short-info col-md-9">
+          <div class="poster col-xl-3 col-lg-3 col-md-3 col-sm-3 col-3"" style="background: url('` + myData[key].b_poster + `'); background-size: 100% 100%;"></div>
+          <div class="short-info col-xl-8 col-lg-8 col-md-7 col-sm-12 col-12">
               <div class="item"><i class="fa fa-book icons" aria-hidden="true"></i><b>Книга:</b> ` + myData[key].b_title + `</div>
               <div class="item"><i class="fa fa-user-o icons" aria-hidden="true"></i><b>Автор:</b> ` + myData[key].b_author + `</div>
               <div class="item"><i class="fa fa-code-fork icons" aria-hidden="true"></i><b>Категории:</b> Фантастика, Космос, Сатира</div>
