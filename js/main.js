@@ -117,7 +117,7 @@ var filter = arr.filter((item, i , arr) => {
 console.log(filter);
 
 var map = arr.map((item, i, arr) => {
-  if (item === 'one'){
+  if (item === 'one') {
     return item + ' hundred';
   }
   return item + ' hundreds';

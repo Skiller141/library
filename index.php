@@ -142,9 +142,9 @@
             showArrow.style.display = 'block';
         });
 
-        showArrow.addEventListener('click', function() {
+        showArrow.addEventListener('click', () => {
             leftSidebar.classList.replace('fadeOutLeft', 'fadeInLeft');
-            this.style.display = 'none';
+            showArrow.style.display = 'none';
         });
 
     </script>

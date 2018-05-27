@@ -95,7 +95,7 @@ if (isset($_GET['id'])){
 </head>
 <body>
 <header>
-    <h1 class="title">Library</h1>
+    <h1 class="title"><a href="index.php" style="color: #eee;">Library</a></h1>
     <?php 
     if (isset($_GET['id'])){
       ?>
@@ -169,8 +169,8 @@ if (isset($_GET['id'])){
           </button>
         </div>
         <div class="modal-body">
-          <form id="addBookForm" action="upload.php" method="POST" enctype="multipart/form-data">
-            <input type="hidden" name="random">
+          <form id="addBookForm" action="edit.php" method="POST" enctype="multipart/form-data">
+            <input type="hidden" name="id" value="<?php echo $_GET['id'] ?>">
             <div class="form-group">
               <label for="title" class="col-form-label col-md-3">Book:</label>
               <input type="text" class="form-control col-md-8" name="title" value="<?php echo $myData[0]['b_title'] ?>">
