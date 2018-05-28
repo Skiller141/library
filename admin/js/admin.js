@@ -1,24 +1,20 @@
-let categories = document.getElementById('categories');
-let catOut = document.getElementsByClassName('catOut')[0];
-let myArr = [];
-categories.addEventListener('change', function () {
-    let index = this.options.selectedIndex;
-    console.log(this.options[index].text);
-    catOut.innerHTML += this.options[index].text + ' ';
-    // myArr.push(this.options[index].text);
-    // catOut.innerHTML = catOut.innerHTML.slice(0, catOut.innerHTML.lastIndexOf(', '));
-    // myArr.map(function(item) {
-    //     return item + ', ';
-    // });
-    // console.log(myArr);
-    // for (var i = 0; i < myArr.length; i++) {
-    //     catOut.innerHTML = myArr[i];
-    // }
-    // catOut.innerHTML = catOut.innerHTML.slice(0, catOut.innerHTML.lastIndexOf(', '));
-    // let newArr = myArr.reduce(function (total, currentValue, index, arr) {
-    //     return currentValue += ', ';
-    // },[]);
-    // catOut.innerHTML += newArr;
-    // catOut.innerHTML = catOut.innerHTML.slice(0, catOut.innerHTML.lastIndexOf(', '));
-    // console.log(newArr);
-});
+let catCheckBox = document.getElementsByClassName('catCheckBox');
+let catCheckBoxLabel = document.getElementsByClassName('catCheckBoxLabel');
+for (var i = 0; i < catCheckBox.length; i++) {
+    catCheckBox[i].addEventListener('change', function() {
+        if (this.checked == true) {
+            catCheckBoxLabel[this.value].style.fontWeight = 'bold';
+            catCheckBoxLabel[this.value].style.color = 'green';
+        } else {
+            catCheckBoxLabel[this.value].style.fontWeight = 'normal';
+            catCheckBoxLabel[this.value].style.color = 'black';
+        }
+    });
+}
+
+let addCat = document.getElementById('addCat');
+let addCatInp = document.getElementById('addCatInp');
+
+// addCat.addEventListener('click', () => {
+//     console.log(addCatInp.value);
+// });
