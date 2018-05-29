@@ -12,9 +12,5 @@ for (var i = 0; i < catCheckBox.length; i++) {
     });
 }
 
-let addCat = document.getElementById('addCat');
-let addCatInp = document.getElementById('addCatInp');
-
-// addCat.addEventListener('click', () => {
-//     console.log(addCatInp.value);
-// });
+let catOut = document.getElementsByClassName('catOut')[0];
+catOut.innerHTML = catOut.innerHTML.slice(0, catOut.innerHTML.lastIndexOf(','));

@@ -24,30 +24,31 @@
 		}
 	}
 
+		$catArr = [];
 	if (isset($_POST['addCat'])) {
-		$addCatInp = $_POST['addCatInp'];
-		$catJSON = fopen('category.json', 'r');
-		$catJSONRead = fread($catJSON, filesize("category.json"));
-		$catArr[] = json_decode($catJSONRead);
-		fclose($catJSON);
+				$addCatInp = $_POST['addCatInp'];
+				if (filesize("category.json") > 0) {
+						$catJSON = fopen('category.json', 'r');
+						$catJSONRead = fread($catJSON, filesize("category.json"));
+						$catArr = json_decode($catJSONRead);
+						fclose($catJSON);
+				}
 
-		$catJSON = fopen('category.json', 'w');
-		$catArr[] = $addCatInp;
+				if (!in_array($addCatInp, $catArr)) {
+						$catArr[] = $addCatInp;
+						header("Refresh:0");
+				} else {
+						?>
+								<script>
+										alert('The category <?php echo $addCatInp; ?> already exists!');
+								</script>
+						<?php
+				}
+
+				$catJSON = fopen('category.json', 'w');
 		fwrite($catJSON, json_encode($catArr));
 		fclose($catJSON);
-		
-
-		// fwrite($catJSON, '{"cat-1": "' . $addCatInp . '"}');
-		// fclose($catJSON);
 	}
-
-	// $catJSON = fopen('category.json', 'r');
-	// $catJSONRead = fread($catJSON, filesize("category.json"));
-	// $catArr[] = json_decode($catJSONRead);
-
-	// echo "<pre>";
-	// print_r($catArr);
-	// echo "</pre>";
 
 	mysqli_close($conn);
 ?>
@@ -138,7 +139,7 @@
 									<div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordionExample">
 										<div class="card-body">
 											<div class="form-check">
-											 <input class="form-check-input catCheckBox" type="checkbox" value="0" id="defaultCheck1">
+											 <!-- <input class="form-check-input catCheckBox" type="checkbox" value="0" id="defaultCheck1">
 											 <label class="form-check-label catCheckBoxLabel" for="defaultCheck1">
 												Checkbox 1
 											 </label><br />
@@ -149,10 +150,28 @@
 											 <input class="form-check-input catCheckBox" type="checkbox" value="2" id="defaultCheck3">
 											 <label class="form-check-label catCheckBoxLabel" for="defaultCheck3">
 												Checkbox 3
-											 </label><br />
+											 </label><br /> -->
+											 <?php
+													if (filesize("category.json") > 0) {
+														$catJSON = fopen('category.json', 'r');
+														$catJSONRead = fread($catJSON, filesize("category.json"));
+														$catArr = json_decode($catJSONRead);
+														fclose($catJSON);
+
+														for ($i = 0; $i < count($catArr); $i++) {
+															// echo $catArr[$i] . ',<br>';
+															?>
+																<input class="form-check-input catCheckBox" type="checkbox" value="<?php echo $i; ?>" id="defaultCheck<?php echo $i; ?>">
+																<label class="form-check-label catCheckBoxLabel" for="defaultCheck<?php echo $i; ?>">
+																	<?php echo $catArr[$i]; ?>
+																</label><br />
+															<?php
+														}
+													}
+												?>
 											</div>
 										</div>
-										</div>
+										<!-- </div> -->
 									</div>
 								</div>
 							</div>
@@ -170,7 +189,21 @@
 							<input type="text" name="addCatInp" id="addCatInp">
 							<button type="submit" class="btn btn-success" name="addCat" id="addCat">ADD</button>
 						</form>
-					<?php
+						<div class="catOut">
+				<?php
+						if (filesize("category.json") > 0) {
+								$catJSON = fopen('category.json', 'r');
+								$catJSONRead = fread($catJSON, filesize("category.json"));
+								$catArr = json_decode($catJSONRead);
+								fclose($catJSON);
+
+								for ($i = 0; $i < count($catArr); $i++) {
+										echo $catArr[$i] . ',<br>';
+								}
+						}
+				?>
+						</div>
+				<?php
 				}
 			?>
 			</div>
