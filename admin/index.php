@@ -4,14 +4,14 @@
 	$myData = [];
 	$sql = "SELECT * FROM books";
 	$result = mysqli_query($conn, $sql);
-	if (mysqli_num_rows($result) > 0) {
-		while($row = mysqli_fetch_array($result)) {
-			$myData[] = $row;
+	if ($result) {
+		if (mysqli_num_rows($result) > 0) {
+			while($row = mysqli_fetch_array($result)) {
+				$myData[] = $row;
+			}
 		}
-		// echo '<pre>';
-		// print_r($myData);
-		// echo '</pre>';
 	}
+	
 
 	if (isset($_GET['remove'])) {
 		$removeID = $_GET['remove'];
@@ -26,26 +26,23 @@
 
 		$catArr = [];
 	if (isset($_POST['addCat'])) {
-				$addCatInp = $_POST['addCatInp'];
-				if (filesize("category.json") > 0) {
-						$catJSON = fopen('category.json', 'r');
-						$catJSONRead = fread($catJSON, filesize("category.json"));
-						$catArr = json_decode($catJSONRead);
-						fclose($catJSON);
-				}
+		$addCatInp = $_POST['addCatInp'];
+		if (filesize("category.json") > 0) {
+				$catJSON = fopen('category.json', 'r');
+				$catJSONRead = fread($catJSON, filesize("category.json"));
+				$catArr = json_decode($catJSONRead);
+				fclose($catJSON);
+		}
 
-				if (!in_array($addCatInp, $catArr)) {
-						$catArr[] = $addCatInp;
-						header("Refresh:0");
-				} else {
-						?>
-								<script>
-										alert('The category <?php echo $addCatInp; ?> already exists!');
-								</script>
-						<?php
-				}
+		if (!in_array($addCatInp, $catArr)) {
+				$catArr[] = $addCatInp;
+				header("Refresh:0");
+		} else {
+				echo "<script>alert('The category $addCatInp already exists!');</script>";
+				
+		}
 
-				$catJSON = fopen('category.json', 'w');
+		$catJSON = fopen('category.json', 'w');
 		fwrite($catJSON, json_encode($catArr));
 		fclose($catJSON);
 	}
