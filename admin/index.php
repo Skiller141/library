@@ -11,7 +11,7 @@
 			}
 		}
 	}
-	
+
 
 	if (isset($_GET['remove'])) {
 		$removeID = $_GET['remove'];
@@ -39,7 +39,7 @@
 				header("Refresh:0");
 		} else {
 				echo "<script>alert('The category $addCatInp already exists!');</script>";
-				
+
 		}
 
 		$catJSON = fopen('category.json', 'w');
@@ -77,10 +77,11 @@
 			<div class="content-header">
 				<a href="?book=add" class="btn btn-success">Add Book</a>
 			</div>
-			<div class="out">
+			<div class="out card">
 			<?php
 				if (isset($_GET['p']) == 'all') {
 					echo '<h1 class="aTitle">All books</h1>';
+					echo '<a href="?book=add" style="text-decoration: none;">Add book</a>';
 					if (count($myData) == 0) {
 						echo '<h3>Not Found!</h3>';
 					} else {
@@ -110,7 +111,7 @@
 							</div>
 
 							<div class="card poster-contaner">
-								<h3 style="text-align: center">Poster</h3>
+								<h5 style="text-align: center">Poster</h5>
 								<div class="input-group mb-3 poster-inp-contaner">
 									<div class="input-group-prepend">
 										<span class="input-group-text" id="basic-addon1">URL</span>
@@ -119,7 +120,7 @@
 								</div>
 								<span style="float: left; margin: 5px 20px;">OR</span>
 								<div class="custom-file poster-inp-contaner">
-									<input type="file" class="custom-file-input" id="customFile">
+									<input type="file" class="custom-file-input" id="customFile" name="uploadPoster">
 									<label class="custom-file-label" for="customFile">Choose file</label>
 								</div>
 							</div>
@@ -136,18 +137,6 @@
 									<div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordionExample">
 										<div class="card-body">
 											<div class="form-check">
-											 <!-- <input class="form-check-input catCheckBox" type="checkbox" value="0" id="defaultCheck1">
-											 <label class="form-check-label catCheckBoxLabel" for="defaultCheck1">
-												Checkbox 1
-											 </label><br />
-											 <input class="form-check-input catCheckBox" type="checkbox" value="1" id="defaultCheck2">
-											 <label class="form-check-label catCheckBoxLabel" for="defaultCheck2">
-												Checkbox 2
-											 </label><br />
-											 <input class="form-check-input catCheckBox" type="checkbox" value="2" id="defaultCheck3">
-											 <label class="form-check-label catCheckBoxLabel" for="defaultCheck3">
-												Checkbox 3
-											 </label><br /> -->
 											 <?php
 													if (filesize("category.json") > 0) {
 														$catJSON = fopen('category.json', 'r');
@@ -156,7 +145,6 @@
 														fclose($catJSON);
 
 														for ($i = 0; $i < count($catArr); $i++) {
-															// echo $catArr[$i] . ',<br>';
 															?>
 																<input class="form-check-input catCheckBox" type="checkbox" value="<?php echo $i; ?>" id="defaultCheck<?php echo $i; ?>">
 																<label class="form-check-label catCheckBoxLabel" for="defaultCheck<?php echo $i; ?>">
@@ -170,6 +158,19 @@
 										</div>
 										<!-- </div> -->
 									</div>
+								</div>
+							</div>
+							<div class="input-group" style="margin: 15px 0;">
+								<div class="input-group-prepend">
+									<span class="input-group-text">Description</span>
+								</div>
+								<textarea class="form-control" aria-label="With textarea"></textarea>
+							</div>
+							<div class="card col-md-5" style="margin: 10px auto; padding: 15px;">
+							<h5 class="aTitle">Upload book</h5>
+								<div class="custom-file">
+									<input type="file" class="custom-file-input" id="customFile" name="uploadBook">
+									<label class="custom-file-label" for="customFile">Choose file</label>
 								</div>
 							</div>
 

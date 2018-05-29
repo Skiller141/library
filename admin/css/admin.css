@@ -21,6 +21,7 @@
 
 .left-sidebar>.ls-menu {
     margin: 10px auto;
+    /* width: 50%; */
 }
 
 .left-sidebar>.ls-menu>.items {
@@ -29,6 +30,12 @@
     text-align: center;
     color: #eee;
     text-decoration: none;
+}
+
+.left-sidebar>.ls-menu>.items>li {
+    /* border-top: 1px solid #ccc; */
+    border-bottom: 1px solid #ccc;
+    list-style: none;
 }
 
 .content {
@@ -47,6 +54,8 @@
 
 .out {
     padding: 20px;
+    width: 90%;
+    margin: 15px auto;
 }
 
 .out>#addBook>.submit {
