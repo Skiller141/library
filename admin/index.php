@@ -14,39 +14,91 @@
 
 
 	if (isset($_GET['remove'])) {
-		$removeID = $_GET['remove'];
-		$sql = "DELETE FROM books WHERE id='$removeID';";
-		$sql .= "DELETE FROM category WHERE id='$removeID';";
-		if (mysqli_multi_query($conn, $sql)) {
-			echo "Record deleted successfully";
-		} else {
-			echo "Error deleting record: " . mysqli_error($conn);
-		}
+		$valid;
+		?>
+		 <script>
+			var conf = confirm('You are sure?');
+			if (conf == true) {
+        <?php $valid = 1;?>
+			} else {
+				<?php $valid = 0;?>
+			}
+		</script>
+		 <?php
+		if ($valid == 1) {
+			$removeID = $_GET['remove'];
+			$sql = "DELETE FROM books WHERE id='$removeID';";
+			$sql .= "DELETE FROM category WHERE id='$removeID';";
+			if (mysqli_multi_query($conn, $sql)) {
+				echo "Record deleted successfully";
+			} else {
+				echo "Error deleting record: " . mysqli_error($conn);
+			}
+		} 
 	}
 
-		$catArr = [];
+    $catArr = [];
+    
+    function openCategoryJSON() {
+        if (filesize("category.json") > 0) {
+            // global $catArr;
+			$catJSON = fopen('category.json', 'r');
+			$catJSONRead = fread($catJSON, filesize("category.json"));
+			$catArr = json_decode($catJSONRead);
+            fclose($catJSON);
+            return $catArr;
+        }
+    }
+
 	if (isset($_POST['addCat'])) {
-		$addCatInp = $_POST['addCatInp'];
-		if (filesize("category.json") > 0) {
-				$catJSON = fopen('category.json', 'r');
-				$catJSONRead = fread($catJSON, filesize("category.json"));
-				$catArr = json_decode($catJSONRead);
-				fclose($catJSON);
-		}
-
-		if (!in_array($addCatInp, $catArr)) {
-				$catArr[] = $addCatInp;
-				header("Refresh:0");
+        $addCatInp = $_POST['addCatInp'];
+        // $addCatInp = mb_convert_case($addCatInp, MB_CASE_LOWER, "UTF-8");
+        $addCatInp = explode(' ', $addCatInp);
+        $addCatInp = str_replace($addCatInp[0], mb_convert_case($addCatInp[0], MB_CASE_TITLE, "UTF-8"), $addCatInp);
+        
+        echo $addCatInp;
+        
+		$catArr = openCategoryJSON();
+        if (count($catArr) == 0) {
+            $catArr[] = $addCatInp;
+            header("Refresh:0");
+        } else if (!in_array($addCatInp, $catArr)) {
+			$catArr[] = $addCatInp;
+			header("Refresh:0");
 		} else {
-				echo "<script>alert('The category $addCatInp already exists!');</script>";
-
+            // echo "<script>alert('The category $addCatInp already exists!');</script>";
+            ?>
+                <div class="alert alert-danger alert-dismissible fade show animated fadeInDown" id="catExistsAlert" role="alert">
+                    The category <strong><?php echo $addCatInp; ?></strong> already exists!
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            <?php
 		}
 
 		$catJSON = fopen('category.json', 'w');
-		fwrite($catJSON, json_encode($catArr));
+		fwrite($catJSON, json_encode($catArr, JSON_UNESCAPED_UNICODE));
 		fclose($catJSON);
-	}
+    }
 
+    if (isset($_GET['removecat'])) {
+        $catArr = openCategoryJSON();
+        $removeCat = mb_convert_case($_GET['removecat'], MB_CASE_LOWER, "UTF-8");
+        echo $removeCat;
+        
+        foreach($catArr as $k => $v) {
+            if ($v != $removeCat) {
+                $newArr[] = $v;
+            } 
+        }
+        
+        $catJSON = fopen('category.json', 'w');
+		fwrite($catJSON, json_encode($newArr, JSON_UNESCAPED_UNICODE));
+        fclose($catJSON);
+        header("Location: ?category");
+    }
+    
 	mysqli_close($conn);
 ?>
 
@@ -58,6 +110,7 @@
 	<meta http-equiv="X-UA-Compatible" content="ie=edge">
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 	<link href="../css/bootstrap.min.css" rel="stylesheet">
+	<link href="../css/animate.css" rel="stylesheet">
 	<link rel="stylesheet" href="css/admin.css">
 	<title>Admin panel</title>
 </head>
@@ -66,7 +119,7 @@
 		<div class="left-sidebar col-md-3">
 			<h1 align="center">Admin panel</h1>
 			<ul class="ls-menu">
-				<a href="" class="items"><li>Dashboard</li></a>
+				<a href="./" class="items"><li>Dashboard</li></a>
 				<a href="?p=all" class="items"><li>All Books</li></a>
 				<a href="?category" class="items"><li>Category</li></a>
 				<li class="items">Item-4</li>
@@ -77,134 +130,7 @@
 			<div class="content-header">
 				<a href="?book=add" class="btn btn-success">Add Book</a>
 			</div>
-			<div class="out card">
-			<?php
-				if (isset($_GET['p']) == 'all') {
-					echo '<h1 class="aTitle">All books</h1>';
-					echo '<a href="?book=add" style="text-decoration: none;">Add book</a>';
-					if (count($myData) == 0) {
-						echo '<h3>Not Found!</h3>';
-					} else {
-						echo '<ul class="list-group">';
-						for ($i = 0; $i < count($myData); $i++) {
-							echo '<li class="list-group-item">' . $myData[$i]['b_title'] . '<a href="?remove=' . $myData[$i]['id'] . '" class="remove-book">Remove</a></li>';
-						}
-						echo '</ul>';
-					}
-				}
-
-				if (isset($_GET['book']) == 'add') {
-					?>
-						<h1 class="aTitle">Add book</h1>
-						<form action="upload.php" method="post" id="addBook" name="addBook">
-							<div class="input-group mb-3">
-								<div class="input-group-prepend">
-									<span class="input-group-text" id="basic-addon1">Название книги</span>
-								</div>
-								<input type="text" class="form-control" name="bTitle" placeholder="Title" aria-label="Username" aria-describedby="basic-addon1">
-							</div>
-							<div class="input-group mb-3">
-								<div class="input-group-prepend">
-									<span class="input-group-text" id="basic-addon1">Автор</span>
-								</div>
-								<input type="text" class="form-control" name="bAuthor" placeholder="Author" aria-label="Author" aria-describedby="basic-addon1">
-							</div>
-
-							<div class="card poster-contaner">
-								<h5 style="text-align: center">Poster</h5>
-								<div class="input-group mb-3 poster-inp-contaner">
-									<div class="input-group-prepend">
-										<span class="input-group-text" id="basic-addon1">URL</span>
-									</div>
-									<input type="text" class="form-control" name="bPoster" placeholder="URL to poster" aria-label="Poster" aria-describedby="basic-addon1">
-								</div>
-								<span style="float: left; margin: 5px 20px;">OR</span>
-								<div class="custom-file poster-inp-contaner">
-									<input type="file" class="custom-file-input" id="customFile" name="uploadPoster">
-									<label class="custom-file-label" for="customFile">Choose file</label>
-								</div>
-							</div>
-							<br />
-							<div class="accordion" id="accordionExample">
-								<div class="card">
-									<div class="card-header" id="headingOne">
-									<h5 class="mb-0">
-										<button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-										Категории:
-										</button>
-									</h5>
-									</div>
-									<div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordionExample">
-										<div class="card-body">
-											<div class="form-check">
-											 <?php
-													if (filesize("category.json") > 0) {
-														$catJSON = fopen('category.json', 'r');
-														$catJSONRead = fread($catJSON, filesize("category.json"));
-														$catArr = json_decode($catJSONRead);
-														fclose($catJSON);
-
-														for ($i = 0; $i < count($catArr); $i++) {
-															?>
-																<input class="form-check-input catCheckBox" type="checkbox" value="<?php echo $i; ?>" id="defaultCheck<?php echo $i; ?>">
-																<label class="form-check-label catCheckBoxLabel" for="defaultCheck<?php echo $i; ?>">
-																	<?php echo $catArr[$i]; ?>
-																</label><br />
-															<?php
-														}
-													}
-												?>
-											</div>
-										</div>
-										<!-- </div> -->
-									</div>
-								</div>
-							</div>
-							<div class="input-group" style="margin: 15px 0;">
-								<div class="input-group-prepend">
-									<span class="input-group-text">Description</span>
-								</div>
-								<textarea class="form-control" aria-label="With textarea"></textarea>
-							</div>
-							<div class="card col-md-5" style="margin: 10px auto; padding: 15px;">
-							<h5 class="aTitle">Upload book</h5>
-								<div class="custom-file">
-									<input type="file" class="custom-file-input" id="customFile" name="uploadBook">
-									<label class="custom-file-label" for="customFile">Choose file</label>
-								</div>
-							</div>
-
-							<input type="submit" class="btn btn-primary submit" name="submit" value="Submit">
-						</form>
-					<?php
-				}
-
-				if (isset($_GET['category'])) {
-					?>
-						<h1 class="aTitle">Category</h1>
-						<form action="" method="post">
-							<label for="addCatInp">Add category</label>
-							<input type="text" name="addCatInp" id="addCatInp">
-							<button type="submit" class="btn btn-success" name="addCat" id="addCat">ADD</button>
-						</form>
-						<div class="catOut">
-				<?php
-						if (filesize("category.json") > 0) {
-								$catJSON = fopen('category.json', 'r');
-								$catJSONRead = fread($catJSON, filesize("category.json"));
-								$catArr = json_decode($catJSONRead);
-								fclose($catJSON);
-
-								for ($i = 0; $i < count($catArr); $i++) {
-										echo $catArr[$i] . ',<br>';
-								}
-						}
-				?>
-						</div>
-				<?php
-				}
-			?>
-			</div>
+			<?php require_once('content.php'); ?>
 		</div>
 	</div>
 

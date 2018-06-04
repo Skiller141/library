@@ -58,6 +58,8 @@
     margin: 15px auto;
 }
 
+/*********************Add book***************************/
+
 .out>#addBook>.submit {
     display: block;
     margin: 15px auto;
@@ -79,10 +81,53 @@
     float: right;
 }
 
+#addBook>label {
+    width: 130px;
+}
+
 .aTitle {
     text-align: center;
 }
 
-#addBook>label {
-    width: 130px;
+/********************Category******************************/
+
+/* .out>.catOut {
+    padding: 15px;
+    margin-top: 10px;
+    border: 1px solid #ccc;
+} */
+
+.out>.catOut>.catList {
+    /* width: 500px; */
+    /* flex-direction: row !important; */
+    flex-flow: row wrap;
+    justify-content: center;
+    padding: 15px 15px 0 15px;
+    margin-top: 10px;
+    border: 1px solid #ccc;
+}
+
+.out>.catOut>.catList>li {
+    margin: 0 5px 15px 5px;
+    display: table;
+}
+
+.out>.catOut>.catList>li>.removeCat {
+    text-decoration: none;
+    margin: 0 0 0 30px;
+    /* padding: 0 10px; */
+}
+
+.out>.catOut>.catList>li>.removeCat:hover {
+    /* background: #ccc; */
+    color: red;
+    /* border-radius: 50%; */
+}
+
+#catExistsAlert {
+    display: table;
+    position: fixed;
+    top: 15px;
+    right: 15px;
+    z-index: 1000;
 }
