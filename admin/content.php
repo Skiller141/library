@@ -46,14 +46,11 @@ if (isset($_GET['book']) == 'add') {
 			</div>
 		</div>
 		<br />
-		<div class="accordion" id="accordionExample">
-			<div class="card">
-				<div class="card-header" id="headingOne">
-				<h5 class="mb-0">
-					<button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-					Категории:
-					</button>
-				</h5>
+		<div class="accordion">
+			<div class="card" id="accordionExample">
+				<div class="card-header addCatAccordion" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne" id="headingOne">
+					<span class="mb-0">Категории</span>
+                    <i class="fas fa-sort-down mr-1 myArrow" style="float:right;"></i>
 				</div>
 				<div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordionExample">
 					<div class="card-body">

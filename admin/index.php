@@ -52,11 +52,11 @@
 
 	if (isset($_POST['addCat'])) {
         $addCatInp = $_POST['addCatInp'];
-        // $addCatInp = mb_convert_case($addCatInp, MB_CASE_LOWER, "UTF-8");
-        $addCatInp = explode(' ', $addCatInp);
-        $addCatInp = str_replace($addCatInp[0], mb_convert_case($addCatInp[0], MB_CASE_TITLE, "UTF-8"), $addCatInp);
+        $addCatInp = mb_convert_case($addCatInp, MB_CASE_LOWER, "UTF-8");
+        // $addCatInp = explode(' ', $addCatInp);
+        // $addCatInp = str_replace($addCatInp[0], mb_convert_case($addCatInp[0], MB_CASE_TITLE, "UTF-8"), $addCatInp);
         
-        echo $addCatInp;
+        // echo $addCatInp;
         
 		$catArr = openCategoryJSON();
         if (count($catArr) == 0) {
@@ -108,7 +108,7 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<meta http-equiv="X-UA-Compatible" content="ie=edge">
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp" crossorigin="anonymous">
 	<link href="../css/bootstrap.min.css" rel="stylesheet">
 	<link href="../css/animate.css" rel="stylesheet">
 	<link rel="stylesheet" href="css/admin.css">
