@@ -4,7 +4,7 @@ if (isset($_POST['submit'])) {
     $id = uniqid();
     $title = $_POST['title'];
     $author = $_POST['author'];
-    $year = $_POST['year'];
+    // $year = $_POST['year'];
     $poster = $_POST['poster'];
     $description = $_POST['description'];
     // $book = $_FILES['uploadFile'];
@@ -12,7 +12,7 @@ if (isset($_POST['submit'])) {
     $category = $_POST['fcb'];
 
     // echo '<pre>';
-    // print_r($fcb);
+    // print_r($category);
     // echo '</pre>';
 
     function insertBook() {

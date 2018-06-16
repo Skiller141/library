@@ -62,7 +62,7 @@ if (isset($_GET['book']) == 'add') {
                                         $v = mb_convert_case($v, MB_CASE_TITLE, "UTF-8");
                                         ?>
                                             <input class="form-check-input catCheckBox" type="checkbox" name="fcb[]" value="<?php echo $catArr[$k]; ?>" catIndex="<?php echo $k; ?>" id="defaultCheck<?php echo $k; ?>">
-                                            <label class="form-check-label catCheckBoxLabel" name="fcb[]" for="defaultCheck<?php echo $k; ?>">
+                                            <label class="form-check-label catCheckBoxLabel" for="defaultCheck<?php echo $k; ?>">
                                                 <?php echo $v; ?>
                                             </label><br />
                                         <?php

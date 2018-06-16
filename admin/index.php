@@ -14,27 +14,26 @@
 
 
 	if (isset($_GET['remove'])) {
-		$valid;
-		?>
-		 <script>
-			var conf = confirm('You are sure?');
-			if (conf == true) {
-        <?php $valid = 1;?>
-			} else {
-				<?php $valid = 0;?>
-			}
-		</script>
-		 <?php
-		if ($valid == 1) {
-			$removeID = $_GET['remove'];
-			$sql = "DELETE FROM books WHERE id='$removeID';";
-			$sql .= "DELETE FROM category WHERE id='$removeID';";
-			if (mysqli_multi_query($conn, $sql)) {
-				echo "Record deleted successfully";
-			} else {
-				echo "Error deleting record: " . mysqli_error($conn);
-			}
-		} 
+        ?>
+        <script>
+        var c = confirm('You are sure?')
+            if (c == true) {
+                <?php
+                $removeID = $_GET['remove'];
+                $sql = "DELETE FROM books WHERE id='$removeID';";
+                $sql .= "DELETE FROM category WHERE id='$removeID';";
+                if (mysqli_multi_query($conn, $sql)) {
+                    echo "Record deleted successfully";
+                } else {
+                    echo "Error deleting record: " . mysqli_error($conn);
+                }
+                header("Location: ?p=all");
+                ?>
+            } else {
+                console.log(false);
+            }
+        </script>
+        <?php
 	}
 
     $catArr = [];
