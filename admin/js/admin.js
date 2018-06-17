@@ -12,14 +12,14 @@ for (var i = 0; i < catCheckBox.length; i++) {
     });
 }
 
-let catOut = document.getElementsByClassName('catOut')[0];
-if (catOut != undefined) {
-    catOut.innerHTML = catOut.innerHTML.slice(0, catOut.innerHTML.lastIndexOf(','));
-}
+// let catOut = document.getElementsByClassName('catOut')[0];
+// if (catOut != null || catOut != undefined) {
+//     catOut.innerHTML = catOut.innerHTML.slice(0, catOut.innerHTML.lastIndexOf(','));
+// }
 
 let headingOne = document.getElementById('headingOne');
 let myArrow = document.getElementsByClassName('myArrow')[0];
-if (headingOne != null) {
+if (headingOne != null || headingOne != undefined) {
     headingOne.addEventListener('click', function() {
         if (myArrow.classList.contains('fa-sort-up')) {
             myArrow.classList.replace('fa-sort-up', 'fa-sort-down');
@@ -32,3 +32,8 @@ if (headingOne != null) {
         }
     });
 }
+
+var a = document.createElement('a');
+a.href = 'http://www.example.com:80/search?q=devmo#test';
+
+console.log('http://' + a.hostname + a.pathname);

@@ -1,0 +1,3 @@
+RewriteEngine on
+RewriteRule ^all-books$ index.php?p=all
+RewriteRule ^categories$ index.php?category

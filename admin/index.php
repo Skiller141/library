@@ -97,7 +97,7 @@
         fclose($catJSON);
         header("Location: ?category");
     }
-    
+
 	mysqli_close($conn);
 ?>
 
@@ -119,8 +119,8 @@
 			<h1 align="center">Admin panel</h1>
 			<ul class="ls-menu">
 				<a href="./" class="items"><li>Dashboard</li></a>
-				<a href="?p=all" class="items"><li>All Books</li></a>
-				<a href="?category" class="items"><li>Category</li></a>
+				<a href="all-books" class="items"><li>All Books</li></a>
+				<a href="categories" class="items"><li>Category</li></a>
 				<li class="items">Item-4</li>
 				<li class="items">Item-5</li>
 			</ul>
