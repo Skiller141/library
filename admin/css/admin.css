@@ -65,10 +65,11 @@
     margin: 15px auto;
 }
 
-.out>#addBook>.poster-contaner {
+.out>#addBook .poster-contaner {
     padding: 10px 30px;
     display: table;
     margin: 0 auto;
+    padding: 10px;
 }
 
 .out>#addBook>.poster-contaner>.poster-inp-contaner {
@@ -139,4 +140,11 @@
 
 .addCatAccordion:hover {
     background: #DEDBD3;
+}
+
+.left-side,
+.right-side {
+    width: 50%;
+    float: left;
+    padding: 10px;
 }

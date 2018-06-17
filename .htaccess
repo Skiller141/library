@@ -1,3 +1,6 @@
 RewriteEngine on
+# admin
 RewriteRule ^admin/all-books$ admin/index.php?p=all
 RewriteRule ^admin/categories$ admin/index.php?category
+RewriteRule ^admin/add-new-book$ admin/index.php?book=add
+

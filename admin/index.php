@@ -98,7 +98,7 @@
         header("Location: ?category");
     }
 
-	mysqli_close($conn);
+	//mysqli_close($conn);
 ?>
 
 <!DOCTYPE html>
@@ -127,7 +127,7 @@
 		</div>
 		<div class="content col-md-9">
 			<div class="content-header">
-				<a href="?book=add" class="btn btn-success">Add Book</a>
+				<a href="add-new-book" class="btn btn-success">Add Book</a>
 			</div>
 			<?php require_once('content.php'); ?>
 		</div>
