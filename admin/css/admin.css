@@ -125,7 +125,8 @@
     /* border-radius: 50%; */
 }
 
-#catExistsAlert {
+#catExistsAlert,
+#adminAlert {
     display: table;
     position: fixed;
     top: 15px;

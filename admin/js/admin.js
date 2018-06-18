@@ -32,8 +32,3 @@ if (headingOne != null || headingOne != undefined) {
         }
     });
 }
-
-var a = document.createElement('a');
-a.href = 'http://www.example.com:80/search?q=devmo#test';
-
-console.log('http://' + a.hostname + a.pathname);
