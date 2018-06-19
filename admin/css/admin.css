@@ -60,16 +60,13 @@
 
 /*********************Add book***************************/
 
-.out>#addBook>.submit {
+.out>#addBook .submit {
     display: block;
     margin: 15px auto;
 }
 
-.out>#addBook .poster-contaner {
-    padding: 10px 30px;
-    display: table;
-    margin: 0 auto;
-    padding: 10px;
+.poster-contaner {
+    padding: 15px 30px;
 }
 
 .out>#addBook>.poster-contaner>.poster-inp-contaner {
@@ -132,6 +129,7 @@
     top: 15px;
     right: 15px;
     z-index: 1000;
+    transition: ease-in-out 3s;
 }
 
 .addCatAccordion {
@@ -145,7 +143,13 @@
 
 .left-side,
 .right-side {
-    width: 50%;
-    float: left;
+    width: 49%;
+    /* float: left; */
+    display: inline-block;
     padding: 10px;
+    vertical-align: top;
+}
+
+.form-contaner {
+    position: relative;
 }

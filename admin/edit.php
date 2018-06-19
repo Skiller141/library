@@ -16,111 +16,175 @@
 		$title = $_POST['title'];
 		$author = $_POST['author'];
 		$poster = $_POST['poster'];
-		$description = $_POST['description'];
+        $description = $_POST['description'];
+        $category = $_POST['fcb'];
 
-		$sql = "UPDATE books SET 
-			b_title = '$title', 
-			b_author = '$author',
-			b_poster = '$poster', 
-			b_description = '$description' WHERE id='$id'";
-
-		$result = mysqli_query($conn, $sql);
-		if (mysqli_query($conn, $sql)) {
+        function editAlert($inner_text, $alert_type) {
             ?>
-                <div class="alert alert-success alert-dismissible fade show" id="adminAlert" role="alert">
+                <div class="alert <?php echo $alert_type; ?> alert-dismissible fade show animated bounceInLeft" id="adminAlert" role="alert">
                     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
-                    <strong>Success: </strong>The record updated successfully
+                    <?php echo $inner_text; ?>
                 </div>
             <?php
-		} else {
-            ?>
-                <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                    <strong>>Error: </strong><?php echo $sql . \n . mysqli_error($conn); ?>
-                </div>
-            <?php
-            echo '<span class="alert alert-danger" id="adminAlert" role="alert">Error: ' . $sql . '<br>' . mysqli_error($conn) . '</span>';
-		}
+        }
+
+        $selectCategory = [];
+        $sql = "SELECT * FROM category WHERE id='$id'";
+        $result = mysqli_query($conn, $sql);
+        if ($result) {
+            if (mysqli_num_rows($result) > 0) {
+                while($row = mysqli_fetch_array($result)) {
+                    $selectCategory[] = $row;
+                }
+            }
+        }
+
+
+        for($i = 0; $i < count($category); $i++) {
+            if (!in_array($category[$i], $selectCategory)) {
+                $sql = "INSERT INTO category (id, b_category) VALUES ('$id', '$category[$i]')";
+                if (mysqli_query($conn, $sql)) {
+                    editAlert('<strong>Success: </strong>The record updated successfully', 'alert-success');
+                }
+            } else {
+                $sql = "DELETE * FROM category WHERE 'category' . 'id'='$id'";
+                if (mysqli_query($conn, $sql)) {
+                    echo 'deleted!';
+                }
+            }
+        }
+
+        echo '<pre>';
+        print_r($selectCategory);
+        count($selectCategory);
+        echo '</pre>';
+
+        // if (count($selectCategory) !== count($category))
+        // for($i = 0; $i < count($category); $i++) {
+        //     $sql = "INSERT INTO category (id, b_category) VALUES ('$id', '$category[$i]')";
+        //     if (mysqli_query($conn, $sql)) {
+        //          editAlert('<strong>Success: </strong>The record updated successfully', 'alert-success');
+        //     }
+        // }
+
+        echo '<pre>';
+        print_r($category);
+        echo '</pre>';
+        
+        $selectBook = [];
+        $sql = "SELECT * FROM books WHERE id='$id'";
+        $result = mysqli_query($conn, $sql);
+        if ($result) {
+            if (mysqli_num_rows($result) > 0) {
+                while($row = mysqli_fetch_array($result)) {
+                    $selectBook[] = $row;
+                }
+            }
+        }
+            
+        $sql = "UPDATE books SET 
+        b_title = '$title', 
+        b_author = '$author',
+        b_poster = '$poster', 
+        b_description = '$description' WHERE id='$id'";
+
+        if (mysqli_query($conn, $sql)) {
+            editAlert('<strong>Success: </strong>The record updated successfully', 'alert-success');
+        } else {
+            editAlert('Error: ' . $sql . \n . mysqli_error($conn), 'alert-danger');
+        }          
+        ?>
+            <script>
+                let adminAlert = document.querySelector('#adminAlert');
+                if (adminAlert.classList.contains('bounceInLeft')) {
+                    setTimeout(() => {
+                        adminAlert.classList.replace('bounceInLeft', 'bounceOutUp');
+                        // adminAlert.classList.replace('show', 'hide');
+                    }, 5000);
+                }
+            </script>
+        <?php
 	}
 ?>
 
 <h1 class="aTitle">Edit <?php echo $selectBook[0]['b_title']; ?></h1>
-<form action="" method="post" id="addBook" name="addBook">
-    <div class="left-side">
-        <div class="input-group mb-3">
-            <div class="input-group-prepend">
-                <span class="input-group-text" id="basic-addon1">Название книги</span>
-            </div>
-            <input type="text" class="form-control" value="<?php echo $selectBook[0]['b_title']; ?>" name="title" placeholder="Title" aria-label="Username" aria-describedby="basic-addon1">
-        </div>
-        <div class="input-group mb-3">
-            <div class="input-group-prepend">
-                <span class="input-group-text" id="basic-addon1">Автор</span>
-            </div>
-            <input type="text" class="form-control" value="<?php echo $selectBook[0]['b_author']; ?>" name="author" placeholder="Author" aria-label="Author" aria-describedby="basic-addon1">
-        </div>
-        <div class="accordion">
-            <div class="card" id="accordionExample">
-                <div class="card-header addCatAccordion" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne" id="headingOne">
-                    <span class="mb-0">Категории</span>
-                    <i class="fas fa-sort-down mr-1 myArrow" style="float:right;"></i>
-                </div>
-                <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordionExample">
-                    <div class="card-body">
-                        <div class="form-check">
-                        <?php
-                            $catArr = openCategoryJSON();
-                            if (count($catArr) > 0) {
-                                foreach($catArr as $k => $v) {
-                                    $v = mb_convert_case($v, MB_CASE_TITLE, "UTF-8");
-                                    ?>
-                                        <input class="form-check-input catCheckBox" type="checkbox" name="fcb[]" value="<?php echo $catArr[$k]; ?>" catIndex="<?php echo $k; ?>" id="defaultCheck<?php echo $k; ?>">
-                                        <label class="form-check-label catCheckBoxLabel" for="defaultCheck<?php echo $k; ?>">
-                                            <?php echo $v; ?>
-                                        </label><br />
-                                    <?php
-                                }
-                            }
-                        ?>
-                        </div>
-                    </div>
-                    <!-- </div> -->
-                </div>
-            </div>
-        </div>
-        <div class="input-group" style="margin: 15px 0;">
-            <div class="input-group-prepend">
-                <span class="input-group-text">Description</span>
-            </div>
-            <textarea class="form-control" name="description" aria-label="With textarea"></textarea>
-        </div>
-    </div>
-    <div class="right-side">
-        <div class="card poster-contaner">
-            <h5 style="text-align: center">Poster</h5>
-            <div class="input-group mb-3 poster-inp-contaner">
+<form action="" method="post" id="editBook" name="editBook">
+    <div class="form-contaner">
+        <div class="left-side">
+            <div class="input-group mb-3">
                 <div class="input-group-prepend">
-                    <span class="input-group-text" id="basic-addon1">URL</span>
+                    <span class="input-group-text" id="basic-addon1">Название книги</span>
                 </div>
-                <input type="text" class="form-control" name="poster" placeholder="URL to poster" aria-label="Poster" aria-describedby="basic-addon1">
+                <input type="text" class="form-control" value="<?php echo $selectBook[0]['b_title']; ?>" name="title" placeholder="Title" aria-label="Username" aria-describedby="basic-addon1">
             </div>
-            <p style="text-align: center;">OR</p>
-            <div class="custom-file poster-inp-contaner">
-                <input type="file" class="custom-file-input" id="customFile" name="uploadPoster">
-                <label class="custom-file-label" for="customFile">Choose file</label>
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text" id="basic-addon1">Автор</span>
+                </div>
+                <input type="text" class="form-control" value="<?php echo $selectBook[0]['b_author']; ?>" name="author" placeholder="Author" aria-label="Author" aria-describedby="basic-addon1">
+            </div>
+            <div class="accordion">
+                <div class="card" id="accordionExample">
+                    <div class="card-header addCatAccordion" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne" id="headingOne">
+                        <span class="mb-0">Категории</span>
+                        <i class="fas fa-sort-down mr-1 myArrow" style="float:right;"></i>
+                    </div>
+                    <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordionExample">
+                        <div class="card-body">
+                            <div class="form-check">
+                            <?php
+                                $catArr = openCategoryJSON();
+                                if (count($catArr) > 0) {
+                                    foreach($catArr as $k => $v) {
+                                        $v = mb_convert_case($v, MB_CASE_TITLE, "UTF-8");
+                                        ?>
+                                            <input class="form-check-input catCheckBox" type="checkbox" name="fcb[]" value="<?php echo $catArr[$k]; ?>" catIndex="<?php echo $k; ?>" id="defaultCheck<?php echo $k; ?>">
+                                            <label class="form-check-label catCheckBoxLabel" for="defaultCheck<?php echo $k; ?>">
+                                                <?php echo $v; ?>
+                                            </label><br />
+                                        <?php
+                                    }
+                                }
+                            ?>
+                            </div>
+                        </div>
+                        <!-- </div> -->
+                    </div>
+                </div>
+            </div>
+            <div class="input-group" style="margin: 15px 0;">
+                <div class="input-group-prepend">
+                    <span class="input-group-text">Description</span>
+                </div>
+                <textarea class="form-control" name="description" aria-label="With textarea"></textarea>
             </div>
         </div>
-        <div class="card" style="margin: 10px; padding: 15px;">
-        <h5 class="aTitle">Upload book</h5>
-            <div class="custom-file">
-                <input type="file" class="custom-file-input" id="customFile" name="uploadBook">
-                <label class="custom-file-label" for="customFile">Choose file</label>
+        <div class="right-side">
+            <div class="card poster-contaner">
+                <h5 style="text-align: center">Poster</h5>
+                <div class="input-group mb-3 poster-inp-contaner">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text" id="basic-addon1">URL</span>
+                    </div>
+                    <input type="text" class="form-control" name="poster" placeholder="URL to poster" aria-label="Poster" aria-describedby="basic-addon1">
+                </div>
+                <p style="text-align: center;">OR</p>
+                <div class="custom-file poster-inp-contaner">
+                    <input type="file" class="custom-file-input" id="customFile" name="uploadPoster">
+                    <label class="custom-file-label" for="customFile">Choose file</label>
+                </div>
+            </div>
+            <div class="card" style="margin: 10px 0; padding: 15px;">
+            <h5 class="aTitle">Upload book</h5>
+                <div class="custom-file">
+                    <input type="file" class="custom-file-input" id="customFile" name="uploadBook">
+                    <label class="custom-file-label" for="customFile">Choose file</label>
+                </div>
             </div>
         </div>
     </div>
-	<input type="submit" class="btn btn-primary submit" name="edit_submit" value="Edit">
+    <input type="submit" class="btn btn-primary submit" style="display: block; margin: 0 auto;" name="edit_submit" value="Edit">
+
 </form>

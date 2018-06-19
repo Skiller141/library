@@ -32,3 +32,15 @@ if (headingOne != null || headingOne != undefined) {
         }
     });
 }
+
+
+// let adminAlert = document.querySelector('#adminAlert');
+
+// document.forms['editBook'].addEventListener('submit', () => {
+//     console.log('ok');
+//     if (adminAlert.classList.contains('show')) {
+//         setTimeout(() => {
+//             adminAlert.classList.replace('show', 'hide');
+//         }, 5000);
+//     }
+// });
