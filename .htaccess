@@ -4,3 +4,9 @@ RewriteRule ^admin/all-books$ admin/index.php?p=all
 RewriteRule ^admin/categories$ admin/index.php?category
 RewriteRule ^admin/add-new-book$ admin/index.php?book=add
 
+#grenerate url
+
+RewriteRule ^admin/spektr.html$ admin/index.php?edit=5b2d29edda145
+RewriteRule ^admin/avtostopom-po-galaktike.html$ admin/index.php?edit=5b2d2a013238c
+RewriteRule ^admin/test.html$ admin/index.php?edit=5b2d2c40f1414
+RewriteRule ^admin/123.html$ admin/index.php?edit=5b2d2c5a1b4de

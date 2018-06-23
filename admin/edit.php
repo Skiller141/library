@@ -9,9 +9,26 @@
 			}
 		}
     }
+    
+    $selectCategory = [];
+    $sql = "SELECT * FROM category WHERE id='$id'";
+    $result = mysqli_query($conn, $sql);
+    if ($result) {
+        if (mysqli_num_rows($result) > 0) {
+            while($row = mysqli_fetch_array($result)) {
+                $selectCategory[] = $row;
+            }
+        }
+    }
+
     // echo '<pre>';
     // print_r($selectBook);
-	// echo '</pre>';
+    // echo '</pre>';
+
+    // echo '<pre>';
+    // print_r($selectCategory);
+    // echo '</pre>';
+
 	if (isset($_POST['edit_submit'])) {
 		$title = $_POST['title'];
 		$author = $_POST['author'];
@@ -29,49 +46,17 @@
                 </div>
             <?php
         }
+        if (count($category) > 0) {
+            $sql = "DELETE FROM category WHERE id='$id'";
+            mysqli_query($conn, $sql);
 
-        $selectCategory = [];
-        $sql = "SELECT * FROM category WHERE id='$id'";
-        $result = mysqli_query($conn, $sql);
-        if ($result) {
-            if (mysqli_num_rows($result) > 0) {
-                while($row = mysqli_fetch_array($result)) {
-                    $selectCategory[] = $row;
-                }
-            }
-        }
-
-
-        for($i = 0; $i < count($category); $i++) {
-            if (!in_array($category[$i], $selectCategory)) {
+            for ($i = 0; $i < count($category); $i++) {
                 $sql = "INSERT INTO category (id, b_category) VALUES ('$id', '$category[$i]')";
                 if (mysqli_query($conn, $sql)) {
                     editAlert('<strong>Success: </strong>The record updated successfully', 'alert-success');
                 }
-            } else {
-                $sql = "DELETE * FROM category WHERE 'category' . 'id'='$id'";
-                if (mysqli_query($conn, $sql)) {
-                    echo 'deleted!';
-                }
             }
         }
-
-        echo '<pre>';
-        print_r($selectCategory);
-        count($selectCategory);
-        echo '</pre>';
-
-        // if (count($selectCategory) !== count($category))
-        // for($i = 0; $i < count($category); $i++) {
-        //     $sql = "INSERT INTO category (id, b_category) VALUES ('$id', '$category[$i]')";
-        //     if (mysqli_query($conn, $sql)) {
-        //          editAlert('<strong>Success: </strong>The record updated successfully', 'alert-success');
-        //     }
-        // }
-
-        echo '<pre>';
-        print_r($category);
-        echo '</pre>';
         
         $selectBook = [];
         $sql = "SELECT * FROM books WHERE id='$id'";
@@ -101,14 +86,23 @@
                 if (adminAlert.classList.contains('bounceInLeft')) {
                     setTimeout(() => {
                         adminAlert.classList.replace('bounceInLeft', 'bounceOutUp');
-                        // adminAlert.classList.replace('show', 'hide');
                     }, 5000);
                 }
             </script>
         <?php
-	}
-?>
+    }
 
+    function in_array_r($needle, $haystack, $strict = false) {
+        foreach ($haystack as $item) {
+            if (($strict ? $item === $needle : $item == $needle) || (is_array($item) && in_array_r($needle, $item, $strict))) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+?>
 <h1 class="aTitle">Edit <?php echo $selectBook[0]['b_title']; ?></h1>
 <form action="" method="post" id="editBook" name="editBook">
     <div class="form-contaner">
@@ -138,9 +132,11 @@
                                 $catArr = openCategoryJSON();
                                 if (count($catArr) > 0) {
                                     foreach($catArr as $k => $v) {
+                                        in_array_r($catArr[$k], $selectCategory) ? $check = 'checked' : $check = '';
+
                                         $v = mb_convert_case($v, MB_CASE_TITLE, "UTF-8");
                                         ?>
-                                            <input class="form-check-input catCheckBox" type="checkbox" name="fcb[]" value="<?php echo $catArr[$k]; ?>" catIndex="<?php echo $k; ?>" id="defaultCheck<?php echo $k; ?>">
+                                            <input class="form-check-input catCheckBox" type="checkbox" name="fcb[]" value="<?php echo $catArr[$k]; ?>" catIndex="<?php echo $k; ?>" id="defaultCheck<?php echo $k; ?>" <?php echo $check; ?>>
                                             <label class="form-check-label catCheckBoxLabel" for="defaultCheck<?php echo $k; ?>">
                                                 <?php echo $v; ?>
                                             </label><br />

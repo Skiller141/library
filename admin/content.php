@@ -1,22 +1,24 @@
 <div class="out">
 <?php
+
 if (isset($_GET['p']) == 'all') {
 	echo '<h1 class="aTitle">All books</h1>';
 	if (count($myData) == 0) {
 		echo '<h3>Not Found!</h3>';
 	} else {
-		echo '<ul class="list-group">';
+        echo '<ul class="list-group">';
 		for ($i = 0; $i < count($myData); $i++) {
             echo '
-            <a href="index.php?edit=' . $myData[$i]['id'] . '">
-                <li class="list-group-item">
+                <li class="list-group-item" style="padding: 0!important;">
+                    <a href="'. translit($myData[$i]['b_title']) . '.html" style="padding: .75rem 1.25rem; display: block;">
                     ' . $myData[$i]['b_title'] . '
+                    </a>
                     <a href="?remove=' . $myData[$i]['id'] . '" class="remove-book">Remove</a>
                 </li>
-            </a>';
-		}
+            ';
+        }
 		echo '</ul>';
-	}
+    }  
 }
 
 if (isset($_GET['book']) == 'add') {

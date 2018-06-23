@@ -76,7 +76,9 @@
 
 .remove-book {
     color: red;
-    float: right;
+    top: 10px;
+    right: 10px;
+    position: absolute;
 }
 
 #addBook>label {
@@ -153,3 +155,8 @@
 .form-contaner {
     position: relative;
 }
+
+/* .catCheckBox:checked + catCheckBoxLabel {
+    color: green;
+    font-weight: bold;
+} */
