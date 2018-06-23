@@ -14,7 +14,7 @@ function translit($s) {
 }
 
 if (isset($_POST['submit'])) {
-    require_once('../connect.php');
+    require('../connect.php');
     $id = uniqid();
     $title = $_POST['title'];
     $author = $_POST['author'];
@@ -105,5 +105,6 @@ if (isset($_POST['submit'])) {
 	} else {
 		insertCategory();
     }
+    //mysqli_close($conn);
 }
 ?>

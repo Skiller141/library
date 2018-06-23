@@ -1,24 +1,12 @@
 <?php
-	$selectBook = [];
-    $sql = "SELECT * FROM books WHERE id='$id'";
-	$result = mysqli_query($conn, $sql);
-	if ($result) {
-		if (mysqli_num_rows($result) > 0) {
-			while($row = mysqli_fetch_array($result)) {
-				$selectBook[] = $row;
-			}
-		}
-    }
-    
-    $selectCategory = [];
-    $sql = "SELECT * FROM category WHERE id='$id'";
-    $result = mysqli_query($conn, $sql);
-    if ($result) {
-        if (mysqli_num_rows($result) > 0) {
-            while($row = mysqli_fetch_array($result)) {
-                $selectCategory[] = $row;
+    function in_array_r($needle, $haystack, $strict = false) {
+        foreach ($haystack as $item) {
+            if (($strict ? $item === $needle : $item == $needle) || (is_array($item) && in_array_r($needle, $item, $strict))) {
+                return true;
             }
         }
+
+        return false;
     }
 
     // echo '<pre>';
@@ -34,27 +22,32 @@
 		$author = $_POST['author'];
 		$poster = $_POST['poster'];
         $description = $_POST['description'];
-        $category = $_POST['fcb'];
+        if (isset($_POST['fcb'])) {
+            $category = $_POST['fcb'];
+        } else {
+            $category = [];
+            $sql = "DELETE FROM category WHERE id='$id'";
+            mysqli_query($conn, $sql);
+        }
 
         function editAlert($inner_text, $alert_type) {
             ?>
                 <div class="alert <?php echo $alert_type; ?> alert-dismissible fade show animated bounceInLeft" id="adminAlert" role="alert">
+                    <?php echo $inner_text; ?>
                     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
-                    <?php echo $inner_text; ?>
                 </div>
             <?php
         }
+
         if (count($category) > 0) {
             $sql = "DELETE FROM category WHERE id='$id'";
             mysqli_query($conn, $sql);
 
             for ($i = 0; $i < count($category); $i++) {
                 $sql = "INSERT INTO category (id, b_category) VALUES ('$id', '$category[$i]')";
-                if (mysqli_query($conn, $sql)) {
-                    editAlert('<strong>Success: </strong>The record updated successfully', 'alert-success');
-                }
+                mysqli_query($conn, $sql);
             }
         }
         
@@ -76,7 +69,7 @@
         b_description = '$description' WHERE id='$id'";
 
         if (mysqli_query($conn, $sql)) {
-            editAlert('<strong>Success: </strong>The record updated successfully', 'alert-success');
+            editAlert('<strong>Success:</strong> The record updated successfully', 'alert-success');
         } else {
             editAlert('Error: ' . $sql . \n . mysqli_error($conn), 'alert-danger');
         }          
@@ -88,20 +81,32 @@
                         adminAlert.classList.replace('bounceInLeft', 'bounceOutUp');
                     }, 5000);
                 }
+                
             </script>
         <?php
     }
 
-    function in_array_r($needle, $haystack, $strict = false) {
-        foreach ($haystack as $item) {
-            if (($strict ? $item === $needle : $item == $needle) || (is_array($item) && in_array_r($needle, $item, $strict))) {
-                return true;
+    $selectBook = [];
+    $sql = "SELECT * FROM books WHERE id='$id'";
+	$result = mysqli_query($conn, $sql);
+	if ($result) {
+		if (mysqli_num_rows($result) > 0) {
+			while($row = mysqli_fetch_array($result)) {
+				$selectBook[] = $row;
+			}
+		}
+    }
+    
+    $selectCategory = [];
+    $sql = "SELECT * FROM category WHERE id='$id'";
+    $result = mysqli_query($conn, $sql);
+    if ($result) {
+        if (mysqli_num_rows($result) > 0) {
+            while($row = mysqli_fetch_array($result)) {
+                $selectCategory[] = $row;
             }
         }
-
-        return false;
     }
-
 ?>
 <h1 class="aTitle">Edit <?php echo $selectBook[0]['b_title']; ?></h1>
 <form action="" method="post" id="editBook" name="editBook">
@@ -133,11 +138,11 @@
                                 if (count($catArr) > 0) {
                                     foreach($catArr as $k => $v) {
                                         in_array_r($catArr[$k], $selectCategory) ? $check = 'checked' : $check = '';
-
+                                        in_array_r($catArr[$k], $selectCategory) ? $style = 'color: green; font-weight: bold;' : $style = '';
                                         $v = mb_convert_case($v, MB_CASE_TITLE, "UTF-8");
                                         ?>
                                             <input class="form-check-input catCheckBox" type="checkbox" name="fcb[]" value="<?php echo $catArr[$k]; ?>" catIndex="<?php echo $k; ?>" id="defaultCheck<?php echo $k; ?>" <?php echo $check; ?>>
-                                            <label class="form-check-label catCheckBoxLabel" for="defaultCheck<?php echo $k; ?>">
+                                            <label class="form-check-label catCheckBoxLabel" for="defaultCheck<?php echo $k; ?>" style = "<?php echo $style; ?>">
                                                 <?php echo $v; ?>
                                             </label><br />
                                         <?php

@@ -3,13 +3,13 @@ let catCheckBoxLabel = document.getElementsByClassName('catCheckBoxLabel');
 
 for (var i = 0; i < catCheckBox.length; i++) {
 
-    if (catCheckBox[i].checked == true) {
-        catCheckBoxLabel[catCheckBox[i].getAttribute('catIndex')].style.fontWeight = 'bold';
-        catCheckBoxLabel[catCheckBox[i].getAttribute('catIndex')].style.color = 'green';
-    } else {
-        catCheckBoxLabel[catCheckBox[i].getAttribute('catIndex')].style.fontWeight = 'normal';
-        catCheckBoxLabel[catCheckBox[i].getAttribute('catIndex')].style.color = 'black';
-    }
+    // if (catCheckBox[i].checked == true) {
+    //     catCheckBoxLabel[catCheckBox[i].getAttribute('catIndex')].style.fontWeight = 'bold';
+    //     catCheckBoxLabel[catCheckBox[i].getAttribute('catIndex')].style.color = 'green';
+    // } else {
+    //     catCheckBoxLabel[catCheckBox[i].getAttribute('catIndex')].style.fontWeight = 'normal';
+    //     catCheckBoxLabel[catCheckBox[i].getAttribute('catIndex')].style.color = 'black';
+    // }
 
     catCheckBox[i].addEventListener('change', function() {
         if (this.checked == true) {
