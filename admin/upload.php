@@ -19,11 +19,11 @@ if (isset($_POST['submit'])) {
     $title = $_POST['title'];
     $author = $_POST['author'];
     // $year = $_POST['year'];
-    $poster = $_POST['poster'];
+    // $poster = $_POST['poster'];
     $description = $_POST['description'];
     // $book = $_FILES['uploadFile'];
-
     $category = $_POST['fcb'];
+    $poster = '';
 
     // echo '<pre>';
     // print_r($category);

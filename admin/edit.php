@@ -20,8 +20,10 @@
 	if (isset($_POST['edit_submit'])) {
 		$title = $_POST['title'];
 		$author = $_POST['author'];
-		$poster = $_POST['poster'];
+		// $poster = $_POST['poster'];
         $description = $_POST['description'];
+        // $poster = '';
+        
         if (isset($_POST['fcb'])) {
             $category = $_POST['fcb'];
         } else {
@@ -29,6 +31,30 @@
             $sql = "DELETE FROM category WHERE id='$id'";
             mysqli_query($conn, $sql);
         }
+
+        // echo '<pre>';
+        // print_r($_FILES);
+        // echo '</pre>';
+
+        $oldPath = $_FILES["posterFile"]["tmp_name"];
+        $newPath = "../uploads/" . basename($_FILES["posterFile"]["name"]);
+        $uploadPoster = move_uploaded_file($oldPath, $newPath);
+        // if (file_exists($oldPath)) {
+            if ($uploadPoster) {
+                $poster = substr($newPath, 3);
+            } else {
+                $poster = $_POST['poster'];
+                if ($poster == '') {
+                    $result = mysqli_query($conn, "SELECT b_poster FROM books WHERE id='$id'");
+                    while($row = mysqli_fetch_array($result)) {
+                        $poster_from_db[] = $row;
+                    }
+                    $poster = $poster_from_db[0]['b_poster'];
+                }
+            }
+        // }
+        // move_uploaded_file($oldPath, $newPath);
+        // $poster = substr($newPath, 3);
 
         function editAlert($inner_text, $alert_type) {
             ?>
@@ -109,7 +135,7 @@
     }
 ?>
 <h1 class="aTitle">Edit <?php echo $selectBook[0]['b_title']; ?></h1>
-<form action="" method="post" id="editBook" name="editBook">
+<form action="" method="post" id="editBook" name="editBook" enctype="multipart/form-data">
     <div class="form-contaner">
         <div class="left-side">
             <div class="input-group mb-3">
@@ -173,15 +199,15 @@
                 </div>
                 <p style="text-align: center;">OR</p>
                 <div class="custom-file poster-inp-contaner">
-                    <input type="file" class="custom-file-input" id="customFile" name="uploadPoster">
-                    <label class="custom-file-label" for="customFile">Choose file</label>
+                    <input type="file" class="custom-file-input" id="posterFile" name="posterFile">
+                    <label class="custom-file-label" for="posterFile">Choose file</label>
                 </div>
             </div>
             <div class="card" style="margin: 10px 0; padding: 15px;">
             <h5 class="aTitle">Upload book</h5>
                 <div class="custom-file">
-                    <input type="file" class="custom-file-input" id="customFile" name="uploadBook">
-                    <label class="custom-file-label" for="customFile">Choose file</label>
+                    <input type="file" class="custom-file-input" id="uploadBook" name="uploadBook">
+                    <label class="custom-file-label" for="uploadBook">Choose file</label>
                 </div>
             </div>
         </div>

@@ -26,14 +26,13 @@ if (isset($_GET['id'])) {
     <title>Reader | <?php echo $myData[0]['b_title'] ?></title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
     <link href="css/bootstrap.min.css" rel="stylesheet">
-    <link href="css/mdb.min.css" rel="stylesheet">
     <link href="css/reader.css" rel="stylesheet">
 </head>
 <body>
     <?php require_once('header.php') ?>
     <div class="main-wrapper">
         <div class="chapters"></div>
-        <div class="content col-md-8"><?php echo nl2br(file_get_contents( 'uploads/Lukyanenko_Sergey_Spektr.txt')); ?></div>
+        <div class="content col-md-8"><?php echo nl2br(file_get_contents('uploads/Lukyanenko_Sergey_Spektr.txt')); ?></div>
     </div>
     
     <script src="js/jquery-3.3.1.min.js"></script>
@@ -41,7 +40,5 @@ if (isset($_GET['id'])) {
     <script type="text/javascript" src="js/popper.min.js"></script>
     <!-- Bootstrap core JavaScript -->
     <script type="text/javascript" src="js/bootstrap.min.js"></script>
-    <!-- MDB core JavaScript -->
-    <script type="text/javascript" src="js/mdb.min.js"></script>
 </body>
 </html>
