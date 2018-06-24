@@ -5,15 +5,16 @@ if (isset($_GET['id'])) {
     $result = mysqli_query($conn, $sql);
     if (mysqli_num_rows($result) > 0) {
         while($row = mysqli_fetch_array($result)) {
-            for ($i = 0; $i < 8; $i++ ) {
-                unset($row[$i]);
-            }
             $myData[] = $row;
         }
     } else {
         echo "0 results books";
     }
-    mysqli_close($conn);
+
+    // $file = fopen('uploads/Lukyanenko_Sergey_Spektr.txt', 'r');
+    // $text = fread($file, filesize('uploads/Lukyanenko_Sergey_Spektr.txt'));
+    // fclose($file);
+    //mysqli_close($conn);
 }
 ?>
 <!DOCTYPE html>
@@ -32,7 +33,7 @@ if (isset($_GET['id'])) {
     <?php require_once('header.php') ?>
     <div class="main-wrapper">
         <div class="chapters"></div>
-        <div class="content col-md-8"></div>
+        <div class="content col-md-8"><?php echo nl2br(file_get_contents( 'uploads/Lukyanenko_Sergey_Spektr.txt')); ?></div>
     </div>
     
     <script src="js/jquery-3.3.1.min.js"></script>
