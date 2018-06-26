@@ -146,7 +146,6 @@
             leftSidebar.classList.replace('fadeOutLeft', 'fadeInLeft');
             showArrow.style.display = 'none';
         });
-
     </script>
 </body>
 </html>

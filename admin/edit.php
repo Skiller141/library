@@ -20,7 +20,7 @@
 	if (isset($_POST['edit_submit'])) {
 		$title = $_POST['title'];
 		$author = $_POST['author'];
-		// $poster = $_POST['poster'];
+		$poster = $_POST['poster'];
         $description = $_POST['description'];
         // $poster = '';
         
@@ -39,18 +39,13 @@
         $oldPath = $_FILES["posterFile"]["tmp_name"];
         $newPath = "../uploads/" . basename($_FILES["posterFile"]["name"]);
         $uploadPoster = move_uploaded_file($oldPath, $newPath);
+        // $update_poster_db = mysqli_query($conn, "UPDATE books SET b_poster = '$poster' WHERE id='$id'");
         // if (file_exists($oldPath)) {
             if ($uploadPoster) {
                 $poster = substr($newPath, 3);
-            } else {
-                $poster = $_POST['poster'];
-                if ($poster == '') {
-                    $result = mysqli_query($conn, "SELECT b_poster FROM books WHERE id='$id'");
-                    while($row = mysqli_fetch_array($result)) {
-                        $poster_from_db[] = $row;
-                    }
-                    $poster = $poster_from_db[0]['b_poster'];
-                }
+                mysqli_query($conn, "UPDATE books SET b_poster = '$poster' WHERE id='$id'");
+            } else if ($poster != '') {
+                mysqli_query($conn, "UPDATE books SET b_poster = '$poster' WHERE id='$id'"); 
             }
         // }
         // move_uploaded_file($oldPath, $newPath);
@@ -91,7 +86,6 @@
         $sql = "UPDATE books SET 
         b_title = '$title', 
         b_author = '$author',
-        b_poster = '$poster', 
         b_description = '$description' WHERE id='$id'";
 
         if (mysqli_query($conn, $sql)) {
