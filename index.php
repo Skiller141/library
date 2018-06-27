@@ -1,6 +1,17 @@
 <?php require_once('functions.php');?>
 <?php
     require_once('connect.php');
+
+    function in_array_r($needle, $haystack, $strict = false) {
+        foreach ($haystack as $item) {
+            if (($strict ? $item === $needle : $item == $needle) || (is_array($item) && in_array_r($needle, $item, $strict))) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     $sql = "SELECT * FROM category";
     $result = mysqli_query($conn, $sql);
     if (mysqli_num_rows($result) > 0) {
@@ -10,19 +21,20 @@
             }
             $myCat[] = $row;
         }
-        // for ($i = 0; $i < count($myCat); $i++ ) {
-        //     if ($myCat[$i]['b_category'] === $myCat[$i]['b_category']) {
-        //         unset($myCat[++$i]);
-        //         ++$i;
-        //     }
-        // }
-        // echo '<pre>';
-        // print_r($myCat);
-        // echo '</pre>';
         $myCatJson = json_encode($myCat, JSON_UNESCAPED_UNICODE);
-    } else {
-        echo "0 results categories";
     }
+
+    $sql = "SELECT * FROM books";
+    $result = mysqli_query($conn, $sql);
+    if (mysqli_num_rows($result) > 0) {
+        while($row = mysqli_fetch_array($result)) {
+            $myData[] = $row;
+        }
+    }
+
+    // echo '<pre>';
+    // print_r($myData);
+    // echo '</pre>';
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -51,8 +63,28 @@
     </div>
     <div class="card-contaner col-md-9">
         <!-- auto generate -->
+        <?php
+            foreach ($myData as $book) {
+                $book['b_poster'] === '' ? $poster = 'http://www.artistsimageresource.org/Wordpress/wp-content/themes/dante/images/default-thumb.png' : $poster = $book['b_poster'];
+                ?>
+                    <div class="mycard col-md-12">
+                        <div class="poster col-xl-3 col-lg-3 col-md-3 col-sm-3 col-3" style="background: url('<?php echo $poster; ?>'); background-size: 100% 100%;"></div>
+                        <div class="short-info col-xl-8 col-lg-8 col-md-7 col-sm-12 col-12">
+                            <div class="item"><i class="fa fa-book icons" aria-hidden="true"></i><b>Книга:</b> <?php echo $book['b_title']; ?></div>
+                            <div class="item"><i class="fa fa-user-o icons" aria-hidden="true"></i><b>Автор:</b> <?php echo $book['b_author']; ?></div>
+                            <div class="item"><i class="fa fa-code-fork icons" aria-hidden="true"></i><b>Категории:</b> Фантастика, Космос, Сатира</div>
+                            <div class="item"><i class="fa fa-calendar icons" aria-hidden="true"></i><b>Год:</b> <?php echo $book['b_year']; ?></div>
+                            <div class="item"><i class="fa fa-eye icons" aria-hidden="true"></i><b>Серия:</b> Автостопом по Галактике</div>
+                            <div class="item"><i class="fa fa-file-text-o icons" aria-hidden="true"></i><b>Описание:</b> <?php echo substr($book['b_description'], 0, 255) . '...'; ?></div>
+                            <a href="full.php?id=` + myData[key].id + `" class="btn btn-success float-right">Подробнее</a>
+                        </div>
+                    </div>
+                <?php
+            }
+        ?>
     </div>
   </div>
+
 
   <div id="myChapters"></div>
   <div id="myText"><h1>Chapter 1</h1> Lorem, ipsum dolor sit amet consectetur adipisicing elit.Beatae ea sequi iste eius quos qui ducimus, voluptas deserunt unde saepe minima accusamus praesentium pariatur! Aliquid necessitatibus, laboriosam quidem minima, neque omnis harum itaque ratione deserunt aliquam quae magni atque dolor totam, officiis maxime veritatis veniam vero tempore beatae saepe commodi. <h1>Chapter 2</h1> Lorem ipsum dolor sit amet consectetur adipisicing elit.Tenetur officia animi natus blanditiis quod quisquam quis numquam! Atque unde dolore, tempora nemo corrupti perferendis assumenda quod illum recusandae, vitae, ex maiores amet sit cum at dignissimos.Est eos deserunt tempora iusto quam doloribus eius illo a fuga! Nisi, fugiat illum nulla, doloribus veritatis quisquam, deleniti nihil velit debitis libero officiis ut. <h1>Chapter 3</h1> Vitae mollitia beatae tempora praesentium saepe nam consequuntur incidunt a ipsa quidem quibusdam non, obcaecati et quae vel eaque.Totam, odit vero ? Iste pariatur at beatae sapiente unde.Nostrum consequuntur quaerat et dicta doloremque reprehenderit nihil hic commodi rerum! Lorem ipsum dolor, sit amet consectetur adipisicing elit.Dignissimos alias omnis ut unde itaque! Autem repellendus totam libero sit molestiae ?</div>
