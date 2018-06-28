@@ -1,17 +1,8 @@
 <?php
-	require_once('../connect.php');
+    require_once('../connect.php');
+    require_once('functions.php');
 
-	$myData = [];
-	$sql = "SELECT * FROM books";
-	$result = mysqli_query($conn, $sql);
-	if ($result) {
-		if (mysqli_num_rows($result) > 0) {
-			while($row = mysqli_fetch_array($result)) {
-				$myData[] = $row;
-			}
-		}
-	}
-
+	$myData = db_select_func($conn, "SELECT * FROM books");
 
 	if (isset($_GET['remove'])) {
         ?>

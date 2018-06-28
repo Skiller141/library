@@ -1,15 +1,18 @@
 <?php
 if (isset($_GET['id'])) {
     require_once('connect.php');
-    $sql = "SELECT * FROM books WHERE id='".$_GET['id']."'";
-    $result = mysqli_query($conn, $sql);
-    if (mysqli_num_rows($result) > 0) {
-        while($row = mysqli_fetch_array($result)) {
-            $myData[] = $row;
-        }
-    } else {
-        echo "0 results books";
-    }
+    require_once('functions.php');
+    // $sql = "SELECT * FROM books WHERE id='".$_GET['id']."'";
+    // $result = mysqli_query($conn, $sql);
+    // if (mysqli_num_rows($result) > 0) {
+    //     while($row = mysqli_fetch_array($result)) {
+    //         $myData[] = $row;
+    //     }
+    // } else {
+    //     echo "0 results books";
+    // }
+    $id = $_GET['id'];
+    $myData = db_select_func($conn, "SELECT * FROM books WHERE id='$id'");
 
     // $file = fopen('uploads/Lukyanenko_Sergey_Spektr.txt', 'r');
     // $text = fread($file, filesize('uploads/Lukyanenko_Sergey_Spektr.txt'));

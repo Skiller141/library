@@ -1,40 +1,15 @@
-<?php require_once('functions.php');?>
 <?php
     require_once('connect.php');
+    require_once('functions.php');
 
-    function in_array_r($needle, $haystack, $strict = false) {
-        foreach ($haystack as $item) {
-            if (($strict ? $item === $needle : $item == $needle) || (is_array($item) && in_array_r($needle, $item, $strict))) {
-                return true;
-            }
-        }
+    // $myCat = db_select_func($conn, "SELECT * FROM category");
+    $myData = db_select_func($conn, "SELECT * FROM books");
 
-        return false;
-    }
-
-    $sql = "SELECT * FROM category";
-    $result = mysqli_query($conn, $sql);
-    if (mysqli_num_rows($result) > 0) {
-        while($row = mysqli_fetch_array($result)) {
-            for ($i = 0; $i < 8; $i++ ) {
-                unset($row[$i]);
-            }
-            $myCat[] = $row;
-        }
-        $myCatJson = json_encode($myCat, JSON_UNESCAPED_UNICODE);
-    }
-
-    $sql = "SELECT * FROM books";
-    $result = mysqli_query($conn, $sql);
-    if (mysqli_num_rows($result) > 0) {
-        while($row = mysqli_fetch_array($result)) {
-            $myData[] = $row;
-        }
-    }
-
-    // echo '<pre>';
-    // print_r($myData);
-    // echo '</pre>';
+    // $cat_string = '';
+    // for ($i = 0; $i < count($myCat); $i++) {
+    //     $cat_string .= '<a href="category.php?cat=' . $myCat[$i]['b_category'] . '">' . $myCat[$i]['b_category'] . '</a>, ';
+    // }
+    // $cat_string = substr($cat_string, 0, strrpos($cat_string, ','));
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -62,21 +37,37 @@
         <i class="fa fa-arrow-left mt-1 ml-1" id='hideArrow' aria-hidden="true"></i>
     </div>
     <div class="card-contaner col-md-9">
-        <!-- auto generate -->
         <?php
+        // echo '<pre>';
+        // print_r($myCat);
+        // echo '</pre>';
+        $cat_str = '';
             foreach ($myData as $book) {
-                $book['b_poster'] === '' ? $poster = 'http://www.artistsimageresource.org/Wordpress/wp-content/themes/dante/images/default-thumb.png' : $poster = $book['b_poster'];
+                if ($book['b_poster'] == '') {
+                    $poster = './img/poster_default.jpg';
+                } else {
+                    $poster = $book['b_poster'];
+                }
+                $id = $book['id'];
+                $myCat = db_select_func($conn, "SELECT * FROM category WHERE id='$id'");
+                echo '<pre>';
+                print_r($myCat);
+                echo '</pre>';
+                
+                $cat_str = '<a href="category.php?cat=' . $myCat[0]['b_category'] . '">' . $myCat[0]['b_category'] . '</a>, ';
+
+                $cat_str = substr($cat_str, 0, strrpos($cat_str, ','));
                 ?>
                     <div class="mycard col-md-12">
-                        <div class="poster col-xl-3 col-lg-3 col-md-3 col-sm-3 col-3" style="background: url('<?php echo $poster; ?>'); background-size: 100% 100%;"></div>
+                        <div class="poster col-xl-3 col-lg-3 col-md-3 col-sm-3 col-3" style="background: url('<?=$poster;?>'); background-size: 100% 100%;"></div>
                         <div class="short-info col-xl-8 col-lg-8 col-md-7 col-sm-12 col-12">
-                            <div class="item"><i class="fa fa-book icons" aria-hidden="true"></i><b>Книга:</b> <?php echo $book['b_title']; ?></div>
-                            <div class="item"><i class="fa fa-user-o icons" aria-hidden="true"></i><b>Автор:</b> <?php echo $book['b_author']; ?></div>
-                            <div class="item"><i class="fa fa-code-fork icons" aria-hidden="true"></i><b>Категории:</b> Фантастика, Космос, Сатира</div>
-                            <div class="item"><i class="fa fa-calendar icons" aria-hidden="true"></i><b>Год:</b> <?php echo $book['b_year']; ?></div>
+                            <div class="item"><i class="fa fa-book icons" aria-hidden="true"></i><b>Книга:</b> <?=$book['b_title'];?></div>
+                            <div class="item"><i class="fa fa-user-o icons" aria-hidden="true"></i><b>Автор:</b> <?=$book['b_author'];?></div>
+                            <div class="item"><i class="fa fa-code-fork icons" aria-hidden="true"></i><b>Категории:</b> <?=$cat_str;?></div>
+                            <div class="item"><i class="fa fa-calendar icons" aria-hidden="true"></i><b>Год:</b> <?=$book['b_year'];?></div>
                             <div class="item"><i class="fa fa-eye icons" aria-hidden="true"></i><b>Серия:</b> Автостопом по Галактике</div>
-                            <div class="item"><i class="fa fa-file-text-o icons" aria-hidden="true"></i><b>Описание:</b> <?php echo substr($book['b_description'], 0, 255) . '...'; ?></div>
-                            <a href="full.php?id=` + myData[key].id + `" class="btn btn-success float-right">Подробнее</a>
+                            <div class="item"><i class="fa fa-file-text-o icons" aria-hidden="true"></i><b>Описание:</b> <?=substr($book['b_description'], 0, 255) . '...';?></div>
+                            <a href="full.php?id=<?=$book['id'];?>" class="btn btn-success float-right">Подробнее</a>
                         </div>
                     </div>
                 <?php
@@ -140,30 +131,7 @@
     <script type="text/javascript" src="js/mdb.min.js"></script>
     <script src="js/main.js"></script>
     <script type="text/javascript">
-        var lsc = document.getElementById('left-sidebar-categories');
-        var categories = <?php echo $myCatJson ?>;
-
-        var result = categories.reduce((unique, o) => {
-            if(!unique.find(obj => obj.b_category === o.b_category)) {
-                unique.push(o);
-            }
-            return unique;
-        },[]);
-        console.log(result);
-
-        for (var key in result) {
-            var countCat = categories.reduce(function (n, option) {
-                return n + (option.b_category == result[key]['b_category']);
-            }, 0);
-
-            lsc.innerHTML += `
-            <a href="category.php?cat=` + result[key]['b_category'] + `">
-                <li class="list-group-item d-flex justify-content-between align-items-center catItems">
-                    ` + result[key]['b_category'] + `
-                    <span class="badge badge-primary badge-pill">` + countCat + `</span>
-                </li>
-            </a>`;
-        }
+        
 
         var hideArrow = document.getElementById('hideArrow');
         var leftSidebar = document.getElementsByClassName('left-sidebar')[0];
