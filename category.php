@@ -1,31 +1,18 @@
 <?php
 if (isset($_GET['cat'])) {
 	require_once('connect.php');
-	require_once('functions.php');
+    require_once('functions.php');
+    
+    $category = $_GET['cat'];
+    $myCat = db_select_func($conn, "SELECT * FROM category WHERE b_category='$category'");
 
-    $sql = "SELECT * FROM category WHERE b_category='" . $_GET['cat'] . "'";
-    $result = mysqli_query($conn, $sql);
-    if (mysqli_num_rows($result) > 0) {
-        while($row = mysqli_fetch_array($result)) {
-            $myCat[] = $row;
-        }
-    } else {
-        echo "0 results categories";
+    foreach ($myCat as $book) {
+        $id = $book['id'];
+        $myData[] = db_select_func($conn, "SELECT * FROM books WHERE id='$id'");
     }
-
-	for ($i = 0; $i < count($myCat); $i++) {
-		$sql = "SELECT * FROM books WHERE id='".$myCat[$i]['id']."'";
-		$result = mysqli_query($conn, $sql);
-		if (mysqli_num_rows($result) > 0) {
-			while($row = mysqli_fetch_array($result)) {
-				$myData[] = $row;
-			}
-			$myDataJSON = json_encode($myData, JSON_UNESCAPED_UNICODE);
-		} else {
-			echo "0 results books";
-		}
-	}
-    mysqli_close($conn);
+    // echo '<pre>';
+    // print_r($myData);
+    // echo '</pre>';
 }
 ?>
 <!DOCTYPE html>
@@ -37,75 +24,47 @@ if (isset($_GET['cat'])) {
 	<title><?php echo $_GET['cat']; ?></title>
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 	<link href="css/bootstrap.min.css" rel="stylesheet">
-	<link href="css/mdb.min.css" rel="stylesheet">
 	<link href="css/style.css" rel="stylesheet">
 	<link rel="stylesheet" href="css/nav.css">
 </head>
 <body>
 	<?php require_once('header.php'); ?>
-	<h1 style="text-align:center; color: #333; padding: 10px 0"><?php echo $_GET['cat']; ?></h1>
-	<div class="card-contaner d-flex justify-content-center">
-		<!-- auto generate -->
+	<h1 style="text-align:center; color: #333; padding: 10px 0"><?=ucfirst($_GET['cat']);?></h1>
+	<div class="col-md-7" style="margin: 0 auto;">
+		<?php
+            foreach ($myData as $book) {
+                if ($book[0]['b_poster'] == '') {
+                    $poster = './img/poster_default.jpg';
+                } else {
+                    $poster = $book[0]['b_poster'];
+                }
+
+                $id = $book[0]['id'];
+                $myCat = db_select_func($conn, "SELECT * FROM category WHERE id='$id'");
+                $cat_str = '';
+                foreach ($myCat as $bookCat) {
+                    $cat_str .= '<a href="category.php?cat=' . $bookCat['b_category'] . '">' . $bookCat['b_category'] . '</a>, ';
+                }
+                $cat_str = substr($cat_str, 0, strrpos($cat_str, ','));
+                ?>
+                    <div class="mycard">
+                        <div class="poster col-xl-3 col-lg-3 col-md-3 col-sm-3 col-3" style="background: url('<?=$poster;?>'); background-size: 100% 100%;"></div>
+                        <div class="short-info col-xl-8 col-lg-8 col-md-7 col-sm-12 col-12">
+                            <div class="item"><i class="fa fa-book icons" aria-hidden="true"></i><b>Книга:</b> <?=$book[0]['b_title'];?></div>
+                            <div class="item"><i class="fa fa-user-o icons" aria-hidden="true"></i><b>Автор:</b> <?=$book[0]['b_author'];?></div>
+                            <div class="item"><i class="fa fa-code-fork icons" aria-hidden="true"></i><b>Категории:</b> <?=$cat_str;?></div>
+                            <div class="item"><i class="fa fa-calendar icons" aria-hidden="true"></i><b>Год:</b> <?=$book[0]['b_year'];?></div>
+                            <div class="item"><i class="fa fa-eye icons" aria-hidden="true"></i><b>Серия:</b> Автостопом по Галактике</div>
+                            <div class="item"><i class="fa fa-file-text-o icons" aria-hidden="true"></i><b>Описание:</b> <?=substr($book[0]['b_description'], 0, 255) . '...';?></div>
+                            <a href="<?='./' . translit($book['b_title']) . '.html';?>" class="btn btn-success float-right">Подробнее</a>
+                        </div>
+                    </div>
+                <?php
+            }
+        ?>
 	</div>
 
 	<script src="js/jquery-3.3.1.min.js"></script>
 	<script src="js/bootstrap.min.js"></script>
-	<script>
-		let divContaner = document.getElementsByClassName('card-contaner')[0]
-		let myData = <?php echo $myDataJSON; ?>;
-		console.log(myData);
-		for (var key = 0; key < myData.length; key++) {
-			let divCard = []
-			divCard[key] = document.createElement('div')
-			divCard[key].classList.add('card', 'm-3', 'clearfix')
-			divCard[key].style = 'width: 18rem; display: inline-block'
-			divContaner.appendChild(divCard[key])
-
-			let listGroup = []
-			listGroup[key] = document.createElement('ul')
-			listGroup[key].classList.add('list-group', 'list-group-flush')
-			divCard[key].appendChild(listGroup[key])
-
-			let cardImg = []
-			cardImg[key] = document.createElement('img')
-			cardImg[key].classList.add('card-img-top')
-			cardImg[key].alt = 'Card image cap'
-			cardImg[key].src = myData[key].b_poster
-			cardImg[key].style.height = '200px'
-			listGroup[key].appendChild(cardImg[key])
-
-			let cardTitle = []
-			cardTitle[key] = document.createElement('h5')
-			cardTitle[key].classList.add('card-title', 'list-group-item')
-			cardTitle[key].innerHTML = myData[key].b_title
-			listGroup[key].appendChild(cardTitle[key])
-
-			let author = []
-			author[key] = document.createElement('li')
-			author[key].classList.add('list-group-item')
-			author[key].innerHTML = myData[key].b_author
-			listGroup[key].appendChild(author[key])
-
-			let year = []
-			year[key] = document.createElement('li')
-			year[key].classList.add('list-group-item')
-			year[key].innerHTML = myData[key].b_year
-			listGroup[key].appendChild(year[key])
-
-			let cardText = []
-			cardText[key] = document.createElement('p')
-			cardText[key].classList.add('list-group-item')
-			cardText[key].innerHTML = myData[key].b_description.slice(0, 255) + '...'
-			cardText[key].style.fontSize = '14px'
-			listGroup[key].appendChild(cardText[key])
-
-			let linkMore = []
-			linkMore[key] = document.createElement('a')
-			linkMore[key].innerHTML = 'Подробнее'
-			linkMore[key].classList.add('btn', 'btn-success', 'btnMore')
-			linkMore[key].setAttribute('href', 'full.php?id=' + myData[key].id)
-			listGroup[key].appendChild(linkMore[key])
-		}
-	</script>
 </body>
 </html>

@@ -24,7 +24,6 @@ if (isset($_GET['id'])){
     <title><?php echo $myData[0]['b_title'] ?></title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
     <link href="css/bootstrap.min.css" rel="stylesheet">
-    <link href="css/mdb.min.css" rel="stylesheet">
     <link href="css/full.css" rel="stylesheet">
     <link rel="stylesheet" href="css/nav.css">
 </head>

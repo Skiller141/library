@@ -20,7 +20,6 @@
     <title>Library</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
     <link href="css/bootstrap.min.css" rel="stylesheet">
-    <link href="css/mdb.min.css" rel="stylesheet">
     <link href="css/style.css" rel="stylesheet">
 </head>
 <body>
@@ -36,26 +35,21 @@
         </ul>
         <i class="fa fa-arrow-left mt-1 ml-1" id='hideArrow' aria-hidden="true"></i>
     </div>
-    <div class="card-contaner col-md-9">
+    <div class="card-contaner col-md-6">
         <?php
-        // echo '<pre>';
-        // print_r($myCat);
-        // echo '</pre>';
-        $cat_str = '';
             foreach ($myData as $book) {
                 if ($book['b_poster'] == '') {
                     $poster = './img/poster_default.jpg';
                 } else {
                     $poster = $book['b_poster'];
                 }
+
                 $id = $book['id'];
                 $myCat = db_select_func($conn, "SELECT * FROM category WHERE id='$id'");
-                echo '<pre>';
-                print_r($myCat);
-                echo '</pre>';
-                
-                $cat_str = '<a href="category.php?cat=' . $myCat[0]['b_category'] . '">' . $myCat[0]['b_category'] . '</a>, ';
-
+                $cat_str = '';
+                foreach ($myCat as $bookCat) {
+                    $cat_str .= '<a href="category.php?cat=' . $bookCat['b_category'] . '">' . $bookCat['b_category'] . '</a>, ';
+                }
                 $cat_str = substr($cat_str, 0, strrpos($cat_str, ','));
                 ?>
                     <div class="mycard col-md-12">
@@ -67,7 +61,7 @@
                             <div class="item"><i class="fa fa-calendar icons" aria-hidden="true"></i><b>Год:</b> <?=$book['b_year'];?></div>
                             <div class="item"><i class="fa fa-eye icons" aria-hidden="true"></i><b>Серия:</b> Автостопом по Галактике</div>
                             <div class="item"><i class="fa fa-file-text-o icons" aria-hidden="true"></i><b>Описание:</b> <?=substr($book['b_description'], 0, 255) . '...';?></div>
-                            <a href="full.php?id=<?=$book['id'];?>" class="btn btn-success float-right">Подробнее</a>
+                            <a href="<?='./' . translit($book['b_title']) . '.html';?>" class="btn btn-success float-right">Подробнее</a>
                         </div>
                     </div>
                 <?php

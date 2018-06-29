@@ -10,3 +10,5 @@ RewriteRule ^admin/avtostopom-po-galaktike.html$ admin/index.php?edit=5b2d2a0132
 RewriteRule ^admin/test.html$ admin/index.php?edit=5b2d2c40f1414
 RewriteRule ^admin/123.html$ admin/index.php?edit=5b2d2c5a1b4de
 RewriteRule ^admin/new-book.html$ admin/index.php?edit=5b2e556db4295
+RewriteRule ^admin/new-new-new-book.html$ admin/index.php?edit=5b3643e65be6b
+RewriteRule ^new-new-new-book.html$ full.php?id=5b3643e65be6b
