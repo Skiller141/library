@@ -10,7 +10,7 @@ if (isset($_GET['p']) == 'all') {
 		for ($i = 0; $i < count($myData); $i++) {
             echo '
                 <li class="list-group-item" style="padding: 0!important;">
-                    <a href="'. translit($myData[$i]['b_title']) . '.html" style="padding: .75rem 1.25rem; display: block;">
+                    <a href="'. translit($myData[$i]['b_title']) . '" style="padding: .75rem 1.25rem; display: block;">
                     ' . $myData[$i]['b_title'] . '
                     </a>
                     <a href="?remove=' . $myData[$i]['id'] . '" class="remove-book">Remove</a>
@@ -137,5 +137,36 @@ if (isset($_GET['category'])) {
 	</div>
 <?php
 }
+
+if (isset($_GET['settings'])) {
+    if (isset($_POST['settings'])) {
+        $title = $_POST['title'];
+        $pagination = $_POST['pagination'];
+
+        $settings = db_select_func($conn, "SELECT * FROM settings");
+        if (count($settings) == 0) {
+            $sql = "INSERT INTO settings (title, pagination) VALUES ('$title', '$pagination')";
+            mysqli_query($conn, $sql);
+        } else {
+            $sql = "UPDATE settings SET title='$title', pagination='$pagination' WHERE id='0'";
+            mysqli_query($conn, $sql);
+        }
+        header('Location: settings');
+    }
+    $settings = db_select_func($conn, "SELECT * FROM settings");
+    ?>
+        <h1>Settings</h1>
+        <form action="" method="post">
+            <label for="title">Title: </label>
+            <input type="text" name="title" id="title" value="<?=$settings[0]['title']?>">
+            <hr>
+            <label for="pagination">Books on a page: </label>
+            <input type="number" name="pagination" id="pagination" value="<?=$settings[0]['pagination']?>" style="width: 50px;">
+            <hr>
+            <button type="submit" class="btn btn-success" id="settings" name="settings">Save</button>
+        </form>
+    <?php
+}
+
 ?>
 </div>

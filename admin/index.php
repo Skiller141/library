@@ -110,7 +110,7 @@
 				<a href="./" class="items"><li>Dashboard</li></a>
 				<a href="all-books" class="items"><li>All Books</li></a>
 				<a href="categories" class="items"><li>Category</li></a>
-				<li class="items">Item-4</li>
+				<a href="settings" class="items"><li>Settings</li></a>
 				<li class="items">Item-5</li>
 			</ul>
 		</div>

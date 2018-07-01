@@ -93,7 +93,7 @@ if (isset($_GET['id'])){
 </head>
 <body>
 <header>
-    <h1 class="title"><a href="index.php" style="color: #eee;">Library</a></h1>
+    <h1 class="title"><a href="index.php" style="color: #eee;"><?=$settings[0]['title']?></a></h1>
     <?php 
     if (isset($_GET['id'])){
       ?>

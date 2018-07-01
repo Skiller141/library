@@ -2,14 +2,35 @@
     require_once('connect.php');
     require_once('functions.php');
 
-    // $myCat = db_select_func($conn, "SELECT * FROM category");
-    $myData = db_select_func($conn, "SELECT * FROM books");
+    $settings = db_select_func($conn, "SELECT * FROM settings");
 
-    // $cat_string = '';
-    // for ($i = 0; $i < count($myCat); $i++) {
-    //     $cat_string .= '<a href="category.php?cat=' . $myCat[$i]['b_category'] . '">' . $myCat[$i]['b_category'] . '</a>, ';
-    // }
-    // $cat_string = substr($cat_string, 0, strrpos($cat_string, ','));
+    $sql = "SELECT * FROM books";
+    $result = mysqli_query($conn, $sql);
+    $count_rows = mysqli_num_rows($result);
+    // echo $count_rows;
+    if (count($settings) == 0) {
+        $books_per_page = 5;
+    } else {
+        $books_per_page = $settings[0]['pagination'];
+    }
+    $number_of_pages = ceil($count_rows / $books_per_page);
+    // echo $number_of_pages;
+
+    if (!isset($_GET['page'])) {
+        $page = 1;
+        $current_page = 1;
+    } else {
+        $page = $_GET['page'];
+        $current_page = $_GET['page'];
+    }
+
+    $this_page_first_result = ($page - 1) * $books_per_page;
+
+    $sql = "SELECT * FROM books LIMIT " . $this_page_first_result . ',' . $books_per_page;
+    $result = mysqli_query($conn, $sql);
+    while($row = mysqli_fetch_array($result)) {
+        $myData[] = $row;
+    }  
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -17,7 +38,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Library</title>
+    <title><?=$settings[0]['title']?></title>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp" crossorigin="anonymous">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
     <link href="css/bootstrap.min.css" rel="stylesheet">
     <link href="css/style.css" rel="stylesheet">
@@ -66,6 +88,30 @@
                     </div>
                 <?php
             }
+
+            echo '<div class="pagination">';
+            // echo $page . '<br>';
+            // echo '<span>' . $number_of_pages . '</span>';
+            ($current_page != 1) ? $pag_left = $current_page - 1 : $pag_left = 0;
+            ($current_page != $number_of_pages) ? $pag_right = $current_page + 1 : $pag_right = $number_of_pages;
+            if ($current_page == 0 || $pag_left == 0) {
+                echo '<span class="pagHollow"><i class="fas fa-arrow-left"></i></span>';
+            } else {
+                echo '<a href="?page=' . $pag_left . '" class="pagItem"><i class="fas fa-arrow-left"></i></a>';
+            }
+            for($page = 1; $page <= $number_of_pages; $page++) {
+                if ($page == $current_page) {
+                    echo '<span class="pagHollow">' . $page . '</span>';
+                } else {
+                    echo '<a href="?page=' . $page . '" class="pagItem">' . $page . '</a>';
+                }
+            }
+            if ($current_page == $number_of_pages) {
+                echo '<span class="pagHollow"><i class="fas fa-arrow-right"></i></span>';
+            } else {
+                echo '<a href="?page=' . $pag_right . '" class="pagItem"><i class="fas fa-arrow-right"></i></a>';
+            }
+            echo '</div>';
         ?>
     </div>
   </div>

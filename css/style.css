@@ -98,3 +98,30 @@
 #showArrow:hover {
     color: #BA4A00;
 }
+
+.pagination {
+    display: table;
+    margin: 20px auto;
+}
+
+.pagination>.pagItem,
+.pagination>.pagHollow {
+    padding: 5px 10px;
+    border: 1px solid #ccc;
+    margin: 0 5px;
+    text-decoration: none;
+    background: #eee;
+    color: #333;
+    transition: 0.3s;
+}
+
+.pagination>.pagItem:hover {
+    color: #eee;
+    background: #333;
+    cursor: pointer;
+}
+
+.pagination>.pagHollow {
+    background: #ccc;
+    color: #333;
+}
