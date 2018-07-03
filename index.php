@@ -3,18 +3,19 @@
     require_once('functions.php');
 
     $settings = db_select_func($conn, "SELECT * FROM settings");
+    // $myCat = db_select_func($conn, "SELECT * FROM category");
 
+    /**********************Pagination********************/
     $sql = "SELECT * FROM books";
     $result = mysqli_query($conn, $sql);
     $count_rows = mysqli_num_rows($result);
-    // echo $count_rows;
+
     if (count($settings) == 0) {
         $books_per_page = 5;
     } else {
         $books_per_page = $settings[0]['pagination'];
     }
     $number_of_pages = ceil($count_rows / $books_per_page);
-    // echo $number_of_pages;
 
     if (!isset($_GET['page'])) {
         $page = 1;
@@ -30,7 +31,18 @@
     $result = mysqli_query($conn, $sql);
     while($row = mysqli_fetch_array($result)) {
         $myData[] = $row;
-    }  
+    }
+    /*******************************************************/
+    function openCategoryJSON() {
+        if (filesize("./admin/category.json") > 0) {
+            // global $catArr;
+			$catJSON = fopen('./admin/category.json', 'r');
+			$catJSONRead = fread($catJSON, filesize("./admin/category.json"));
+			$catArr = json_decode($catJSONRead);
+            fclose($catJSON);
+            return $catArr;
+        }
+    }
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -45,17 +57,28 @@
     <link href="css/style.css" rel="stylesheet">
 </head>
 <body>
-    <?php require_once('header.php') ?>
-  <!-- <div class="card-contaner d-flex justify-content-center">
+<header class="header">
+<div class="header-column title"><?=$settings[0]['title']?></div>
+<div class="header-column search">Search</div>
+<div class="header-column user">User</div>
+</header>
 
-  </div> -->
-  <i class="fa fa-arrow-circle-right mt-1 ml-1" id='showArrow' aria-hidden="true"></i>
-  <div class="main-contaner">
+<div class="main-contaner">
     <div class="left-sidebar col-md-2 animated fadeInLeft">
         <ul class="list-group" id="left-sidebar-categories">
-            <!-- auto generate -->
+            <?php 
+            $category = openCategoryJSON();
+            foreach ($category as $value) {
+                $sql = "SELECT * FROM category WHERE b_category='$value'";
+                $result = mysqli_query($conn, $sql);
+                $n = mysqli_num_rows($result);
+                echo '
+                <a href="category.php?cat=' . $value . '" class="list-group-item d-flex justify-content-between align-items-center catOut">
+                    ' . $value . '<span class="badge badge-success badge-pill">' . $n . '</span>
+                </a>';
+            }
+            ?>
         </ul>
-        <i class="fa fa-arrow-left mt-1 ml-1" id='hideArrow' aria-hidden="true"></i>
     </div>
     <div class="card-contaner col-md-6">
         <?php
@@ -65,7 +88,6 @@
                 } else {
                     $poster = $book['b_poster'];
                 }
-
                 $id = $book['id'];
                 $myCat = db_select_func($conn, "SELECT * FROM category WHERE id='$id'");
                 $cat_str = '';
@@ -74,7 +96,7 @@
                 }
                 $cat_str = substr($cat_str, 0, strrpos($cat_str, ','));
                 ?>
-                    <div class="mycard col-md-12">
+                    <div class="mycard col-md-12" style="background: #eee; color: #333;">
                         <div class="poster col-xl-3 col-lg-3 col-md-3 col-sm-3 col-3" style="background: url('<?=$poster;?>'); background-size: 100% 100%;"></div>
                         <div class="short-info col-xl-8 col-lg-8 col-md-7 col-sm-12 col-12">
                             <div class="item"><i class="fa fa-book icons" aria-hidden="true"></i><b>Книга:</b> <?=$book['b_title'];?></div>
@@ -83,12 +105,11 @@
                             <div class="item"><i class="fa fa-calendar icons" aria-hidden="true"></i><b>Год:</b> <?=$book['b_year'];?></div>
                             <div class="item"><i class="fa fa-eye icons" aria-hidden="true"></i><b>Серия:</b> Автостопом по Галактике</div>
                             <div class="item"><i class="fa fa-file-text-o icons" aria-hidden="true"></i><b>Описание:</b> <?=substr($book['b_description'], 0, 255) . '...';?></div>
-                            <a href="<?='./' . translit($book['b_title']) . '.html';?>" class="btn btn-success float-right">Подробнее</a>
+                            <a href="<?='./' . translit($book[0]['b_title']) . '.html';?>" class="btn btn-success float-right" style="margin: 20px 0 20px 20px;">Подробнее</a>
                         </div>
                     </div>
                 <?php
             }
-
             echo '<div class="pagination">';
             // echo $page . '<br>';
             // echo '<span>' . $number_of_pages . '</span>';
@@ -114,7 +135,7 @@
             echo '</div>';
         ?>
     </div>
-  </div>
+</div>
 
 
   <div id="myChapters"></div>
@@ -167,25 +188,6 @@
     <script type="text/javascript" src="js/popper.min.js"></script>
     <!-- Bootstrap core JavaScript -->
     <script type="text/javascript" src="js/bootstrap.min.js"></script>
-    <!-- MDB core JavaScript -->
-    <script type="text/javascript" src="js/mdb.min.js"></script>
     <script src="js/main.js"></script>
-    <script type="text/javascript">
-        
-
-        var hideArrow = document.getElementById('hideArrow');
-        var leftSidebar = document.getElementsByClassName('left-sidebar')[0];
-        var showArrow = document.getElementById('showArrow');
-        
-        hideArrow.addEventListener('click', () => {
-            leftSidebar.classList.replace('fadeInLeft', 'fadeOutLeft');
-            showArrow.style.display = 'block';
-        });
-
-        showArrow.addEventListener('click', () => {
-            leftSidebar.classList.replace('fadeOutLeft', 'fadeInLeft');
-            showArrow.style.display = 'none';
-        });
-    </script>
 </body>
 </html>

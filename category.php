@@ -1,8 +1,8 @@
 <?php
+require_once('connect.php');
+require_once('functions.php');
+
 if (isset($_GET['cat'])) {
-	require_once('connect.php');
-    require_once('functions.php');
-    
     $category = $_GET['cat'];
     $myCat = db_select_func($conn, "SELECT * FROM category WHERE b_category='$category'");
 
@@ -28,7 +28,6 @@ if (isset($_GET['cat'])) {
 	<link rel="stylesheet" href="css/nav.css">
 </head>
 <body>
-	<?php require_once('header.php'); ?>
 	<h1 style="text-align:center; color: #333; padding: 10px 0"><?=ucfirst($_GET['cat']);?></h1>
 	<div class="col-md-7" style="margin: 0 auto;">
 		<?php

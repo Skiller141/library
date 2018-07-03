@@ -53,14 +53,5 @@ if (isset($_GET['id'])){
     
     <script src="js/jquery-3.3.1.min.js"></script>
     <script src="js/bootstrap.min.js"></script>
-    <!-- <script>
-        var catStr = document.getElementById('category');
-        var categories = <?php echo $myCatJson ?>;
-        for (var i = 0; i < categories.length / 2; i++) {
-            catStr.innerHTML += '<a href="category.php?cat=' + categories[i]['b_category'] + '" />' + categories[i]['b_category'] + '</a>' + ', ';
-        }
-        catStr.innerHTML = catStr.innerHTML.slice(0, catStr.innerHTML.lastIndexOf(','));
-        
-    </script> -->
 </body>
 </html>
