@@ -74,11 +74,24 @@
     float: left;
 }
 
-.remove-book {
-    color: red;
-    top: 10px;
+.book-settings {
+    top: 0;
     right: 10px;
     position: absolute;
+    height: 100%;
+    padding: 12px;
+}
+
+.remove-book {
+    color: red!important;
+    display: inline-block;
+    cursor: pointer;
+}
+
+.edit-book {
+    color: green;
+    display: inline-block;
+    margin-right: 10px;
 }
 
 #addBook>label {

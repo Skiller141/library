@@ -54,3 +54,9 @@ if (headingOne != null || headingOne != undefined) {
 //         }, 5000);
 //     }
 // });
+
+function removeConfirm(id) {
+    if(confirm('Are you sure?')) {
+        window.location = 'index.php?remove=' + id;
+    }
+}

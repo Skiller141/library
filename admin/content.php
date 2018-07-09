@@ -10,10 +10,13 @@ if (isset($_GET['p']) == 'all') {
 		for ($i = 0; $i < count($myData); $i++) {
             echo '
                 <li class="list-group-item" style="padding: 0!important;">
-                    <a href="'. translit($myData[$i]['b_title']) . '" style="padding: .75rem 1.25rem; display: block;">
+                    <a href="'. translit($myData[$i]['b_title']) . '" style="position: relative; padding: .75rem 1.25rem; display: block;">
                     ' . $myData[$i]['b_title'] . '
                     </a>
-                    <a href="?remove=' . $myData[$i]['id'] . '" class="remove-book">Remove</a>
+                    <span class="book-settings">
+                        <a href="' . translit($myData[$i]['b_title']) . '" class="edit-book">Edit</a>
+                        <a class="remove-book" onclick="removeConfirm(\'' . $myData[$i]['id'] . '\')">Remove</a>
+                    </span>
                 </li>
             ';
         }
@@ -49,7 +52,7 @@ if (isset($_GET['book']) == 'add') {
                         <div class="card-body">
                             <div class="form-check">
                             <?php
-                                    $catArr = openCategoryJSON();
+                                    $catArr = openCategoryJSON('./category.json');
                                     if (count($catArr) > 0) {
                                         foreach($catArr as $k => $v) {
                                             $v = mb_convert_case($v, MB_CASE_TITLE, "UTF-8");
@@ -122,7 +125,7 @@ if (isset($_GET['category'])) {
 	<div class="catOut">
 <?php
         // $catArr = [];
-        $catArr = openCategoryJSON();
+        $catArr = openCategoryJSON('./category.json');
         
         if (count($catArr) > 0) {
             echo '<ul class="list-group catList">';

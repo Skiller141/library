@@ -81,3 +81,58 @@ var reduce = arr.reduce((previousValue, currentItem) => {
   return previousValue + ', ' + currentItem;
 });
 console.log(reduce);
+
+document.forms['regForm'].addEventListener('submit', function(e) {
+    let xhr = new XMLHttpRequest();
+    let formData = new FormData(this);
+    xhr.open(this.method, this.action);
+    xhr.addEventListener('load', function() {
+        if (this.readyState === 4 && this.status === 200) {
+            console.log(this.responseText);
+            if (this.responseText == 1) {
+                $('#exampleModalCenter').modal('hide');
+                location.reload();
+            } else {
+                document.querySelector('.myAlert').innerHTML = this.responseText;
+            }
+        }
+    });
+    xhr.send(formData);
+    e.preventDefault();
+});
+
+document.querySelector('#loginBtn').addEventListener('click', () => {
+    document.querySelector('#exampleModalLongTitle').innerHTML = 'Login';
+    document.querySelector('#emailHelp').innerHTML = '';
+    document.querySelector('#submitRegister').innerHTML = 'Login';
+    document.forms['regForm'].action = 'login.php';
+});
+
+document.querySelector('#registerBtn').addEventListener('click', () => {
+    document.querySelector('#exampleModalLongTitle').innerHTML = 'Resiter';
+    document.querySelector('#emailHelp').innerHTML = 'We\'ll never share your email with anyone else.';
+    document.querySelector('#submitRegister').innerHTML = 'Register';
+    document.forms['regForm'].action = 'register.php';
+});
+
+// const myObg = {
+//     days: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
+//     months: ['January', 'February', 'Marth', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
+//     myDate: () => {
+//         let initDate = new Date();
+//         return {
+//             year: initDate.getFullYear(),
+//             month: initDate.getMonth(),
+//             date: initDate.getDate(),
+//             day: initDate.getDay(),
+//             hours: initDate.getHours(),
+//             minutes: initDate.getMinutes(),
+//             seconds: initDate.getSeconds()
+//         };
+//     },
+//     hello: function(name) {
+//         return 'Hello ' + name + ' today is ' + this.myDate().date + ' ' + this.months[this.myDate().month] + ' (' + this.days[--this.myDate().day] + ') ' + this.myDate().year + ' ' + this.myDate().hours + ':' + this.myDate().minutes;
+//     }
+// }
+
+// console.log(myObg.hello('Alexey'));

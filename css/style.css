@@ -142,3 +142,8 @@ body {
     color: #eee;
     background: #333;
 }
+
+.myAlert {
+    color: red;
+    text-align: center;
+}

@@ -45,4 +45,14 @@
 
         return false;
     }
+
+    function openCategoryJSON($file) {
+        if (filesize($file) > 0) {
+			$catJSON = fopen($file, 'r');
+			$catJSONRead = fread($catJSON, filesize($file));
+			$catArr = json_decode($catJSONRead);
+            fclose($catJSON);
+            return $catArr;
+        }
+    }
 ?>

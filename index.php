@@ -2,6 +2,8 @@
     require_once('connect.php');
     require_once('functions.php');
 
+    session_start();
+
     $settings = db_select_func($conn, "SELECT * FROM settings");
     // $myCat = db_select_func($conn, "SELECT * FROM category");
 
@@ -32,16 +34,28 @@
     while($row = mysqli_fetch_array($result)) {
         $myData[] = $row;
     }
-    /*******************************************************/
-    function openCategoryJSON() {
-        if (filesize("./admin/category.json") > 0) {
-            // global $catArr;
-			$catJSON = fopen('./admin/category.json', 'r');
-			$catJSONRead = fread($catJSON, filesize("./admin/category.json"));
-			$catArr = json_decode($catJSONRead);
-            fclose($catJSON);
-            return $catArr;
-        }
+
+    /*************************Register******************************/
+    // $reg_error = "We'll never share your email with anyone else.";
+    // if (isset($_POST['submitRegister'])) {
+    //     $email = $_POST['email'];
+    //     $password = $_POST['password'];
+
+    //     $sql = "SELECT * FROM users WHERE email='$email'";
+    //     $result = mysqli_query($conn, $sql);
+    //     if (mysqli_num_rows($result) >= 1) {
+    //         echo '<span style="color: red;">Пользователь с таким e-mail уже существует!</span>';
+    //     } else {
+    //         $sql = "INSERT INTO users SET email='$email', password='$password'";
+    //         if (mysqli_query($conn, $sql)) {
+    //             echo 'ok';
+    //         }
+    //     }
+    // }   
+
+    if (isset($_GET['logout'])) {
+        session_destroy();
+        header('Location: index.php');
     }
 ?>
 <!DOCTYPE html>
@@ -58,16 +72,57 @@
 </head>
 <body>
 <header class="header">
-<div class="header-column title"><?=$settings[0]['title']?></div>
-<div class="header-column search">Search</div>
-<div class="header-column user">User</div>
+    <div class="header-column title"><?=$settings[0]['title']?></div>
+    <div class="header-column search">Search</div>
+    <div class="header-column user">
+        <button type="button" class="btn btn-outline-warning" data-toggle="modal" data-target="#exampleModalCenter" id="loginBtn" style="margin: 10px 0;">
+        Login
+        </button>
+        <button type="button" class="btn btn-outline-warning" data-toggle="modal" data-target="#exampleModalCenter" id="registerBtn" style="margin: 10px 15px;">
+        Register
+        </button>
+    </div>
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content" style="color: #333;">
+        <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLongTitle">Register</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <form action="register.php" method="POST" name="regForm">
+            <div class="modal-body">
+                <div class="myAlert"></div>
+                <div class="form-group">
+                    <label for="email">Email address</label>
+                    <input type="email" class="form-control" id="email" name="email" aria-describedby="emailHelp" placeholder="Enter email" required>
+                    <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+                </div>
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" class="form-control" id="password" name="password" placeholder="Password" required>
+                </div>
+                <!-- <div class="form-check">
+                    <input type="checkbox" class="form-check-input" id="exampleCheck1">
+                    <label class="form-check-label" for="exampleCheck1">Check me out</label>
+                </div> -->
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="submit" class="btn btn-primary" id="submitRegister" name="submitRegister">Register</button>
+            </div>
+        </form>
+        </div>
+    </div>
+    </div>
 </header>
-
 <div class="main-contaner">
     <div class="left-sidebar col-md-2 animated fadeInLeft">
         <ul class="list-group" id="left-sidebar-categories">
             <?php 
-            $category = openCategoryJSON();
+            $category = openCategoryJSON('./admin/category.json');
             foreach ($category as $value) {
                 $sql = "SELECT * FROM category WHERE b_category='$value'";
                 $result = mysqli_query($conn, $sql);
@@ -80,7 +135,7 @@
             ?>
         </ul>
     </div>
-    <div class="card-contaner col-md-6">
+    <div class="card-contaner col-md-8">
         <?php
             foreach ($myData as $book) {
                 if ($book['b_poster'] == '') {
@@ -191,3 +246,15 @@
     <script src="js/main.js"></script>
 </body>
 </html>
+
+<?php
+    if (isset($_SESSION['email'])) {
+        $user = $_SESSION['email'];
+        ?>
+        <script>
+            document.querySelector('.user').innerHTML = '<?=$user?><br>';
+            document.querySelector('.user').innerHTML += '<a href="index.php?logout" style="cursor:pointer;">Log out</a>';
+        </script>
+        <?php
+    }
+?>

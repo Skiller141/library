@@ -2,43 +2,37 @@
     require_once('../connect.php');
     require_once('../functions.php');
 
-	$myData = db_select_func($conn, "SELECT * FROM books");
+    $myData = db_select_func($conn, "SELECT * FROM books");
+    // echo "<script>confirm(\'Are you sure?\');</script>";
+    // if ($_POST['confirm'] == 1) {
+    //     echo 'true';
+    // } else {
+    //     echo 'false';
+    // }
 
 	if (isset($_GET['remove'])) {
-        ?>
-        <script>
-        var c = confirm('You are sure?')
-            if (c == true) {
-                <?php
-                $removeID = $_GET['remove'];
-                $sql = "DELETE FROM books WHERE id='$removeID';";
-                $sql .= "DELETE FROM category WHERE id='$removeID';";
-                if (mysqli_multi_query($conn, $sql)) {
-                    echo "Record deleted successfully";
-                } else {
-                    echo "Error deleting record: " . mysqli_error($conn);
-                }
-                header("Location: ?p=all");
-                ?>
-            } else {
-                console.log(false);
-            }
-        </script>
-        <?php
+       $removeID = $_GET['remove'];
+       $sql = "DELETE FROM books WHERE id='$removeID';";
+       $sql .= "DELETE FROM category WHERE id='$removeID';";
+       if (mysqli_multi_query($conn, $sql)) {
+           header("Location: ./all-books");
+       } else {
+           echo '<script>alert("Error!");</script>';
+       }
 	}
 
     $catArr = [];
     
-    function openCategoryJSON() {
-        if (filesize("category.json") > 0) {
-            // global $catArr;
-			$catJSON = fopen('category.json', 'r');
-			$catJSONRead = fread($catJSON, filesize("category.json"));
-			$catArr = json_decode($catJSONRead);
-            fclose($catJSON);
-            return $catArr;
-        }
-    }
+    // function openCategoryJSON() {
+    //     if (filesize("category.json") > 0) {
+    //         // global $catArr;
+	// 		$catJSON = fopen('category.json', 'r');
+	// 		$catJSONRead = fread($catJSON, filesize("category.json"));
+	// 		$catArr = json_decode($catJSONRead);
+    //         fclose($catJSON);
+    //         return $catArr;
+    //     }
+    // }
 
 	if (isset($_POST['addCat'])) {
         $addCatInp = $_POST['addCatInp'];
@@ -48,7 +42,7 @@
         
         // echo $addCatInp;
         
-		$catArr = openCategoryJSON();
+		$catArr = openCategoryJSON('/category.json');
         if (count($catArr) == 0) {
             $catArr[] = $addCatInp;
             header("Refresh:0");
