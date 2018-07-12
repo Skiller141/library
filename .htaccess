@@ -7,6 +7,7 @@ RewriteRule ^admin/add-new-book$ admin/index.php?book=add
 
 #grenerate url
 RewriteRule ^admin/spektr$ admin/index.php?edit=5b2d29edda145
+RewriteRule ^spektr.html$ full.php?id=5b2d29edda145
 RewriteRule ^admin/avtostopom-po-galaktike$ admin/index.php?edit=5b2d2a013238c
 RewriteRule ^admin/test$ admin/index.php?edit=5b2d2c40f1414
 RewriteRule ^admin/123$ admin/index.php?edit=5b2d2c5a1b4de

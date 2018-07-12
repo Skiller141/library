@@ -82,37 +82,46 @@ var reduce = arr.reduce((previousValue, currentItem) => {
 });
 console.log(reduce);
 
-document.forms['regForm'].addEventListener('submit', function(e) {
-    let xhr = new XMLHttpRequest();
-    let formData = new FormData(this);
-    xhr.open(this.method, this.action);
-    xhr.addEventListener('load', function() {
-        if (this.readyState === 4 && this.status === 200) {
-            console.log(this.responseText);
-            if (this.responseText == 1) {
-                $('#exampleModalCenter').modal('hide');
-                location.reload();
-            } else {
-                document.querySelector('.myAlert').innerHTML = this.responseText;
-            }
-        }
-    });
-    xhr.send(formData);
-    e.preventDefault();
-});
+// document.forms['regForm'].addEventListener('submit', function(e) {
+//     let xhr = new XMLHttpRequest();
+//     let formData = new FormData(this);
+//     xhr.open(this.method, this.action);
+//     xhr.addEventListener('load', function() {
+//         if (this.readyState === 4 && this.status === 200) {
+//             console.log(this.responseText);
+//             if (this.responseText == 1) {
+//                 if (document.forms['regForm'].action == 'register.php') {
+//                     $('#exampleModalCenter').modal('hide');
+//                 } else {
+//                     location.reload();
+//                 }
+//             } else {
+//                 document.querySelector('.myAlert').innerHTML = this.responseText;
+//             }
+//         }
+//     });
+//     xhr.send(formData);
+//     e.preventDefault();
+// });
 
 document.querySelector('#loginBtn').addEventListener('click', () => {
-    document.querySelector('#exampleModalLongTitle').innerHTML = 'Login';
-    document.querySelector('#emailHelp').innerHTML = '';
-    document.querySelector('#submitRegister').innerHTML = 'Login';
-    document.forms['regForm'].action = 'login.php';
+    // document.querySelector('#exampleModalLongTitle').innerHTML = 'Login';
+    // document.querySelector('#emailHelp').innerHTML = '';
+    // document.querySelector('#submitRegister').innerHTML = 'Login';
+    // document.querySelector('.form-check').innerHTML = `
+    //     <input type="checkbox" class="form-check-input" id="dropdownCheck">
+    //     <label class="form-check-label" for="dropdownCheck">Remember me</label>
+    //     <hr>
+    //     <a class="" href="#">New around here? Sign up</a> | <a class="" href="#">Forgot password?</a>
+    // `;
+    document.forms['autorisationForm'].querySelector('#submit').name = 'login';
 });
 
 document.querySelector('#registerBtn').addEventListener('click', () => {
-    document.querySelector('#exampleModalLongTitle').innerHTML = 'Resiter';
-    document.querySelector('#emailHelp').innerHTML = 'We\'ll never share your email with anyone else.';
-    document.querySelector('#submitRegister').innerHTML = 'Register';
-    document.forms['regForm'].action = 'register.php';
+    // document.querySelector('#exampleModalLongTitle').innerHTML = 'Resiter';
+    // document.querySelector('#emailHelp').innerHTML = 'We\'ll never share your email with anyone else.';
+    // document.querySelector('#submitRegister').innerHTML = 'Register';
+    document.forms['autorisationForm'].querySelector('#submit').name = 'register';
 });
 
 // const myObg = {

@@ -57,6 +57,31 @@
         session_destroy();
         header('Location: index.php');
     }
+    
+    // class myClass {
+    //     var $default_name;
+    //     var $name;
+    //     function hello($name) {
+    //         $this->name = $name;
+    //         $this->default_name = 'John Doe';
+    //         if (isset($name)) {
+    //             return 'Hello ' . $this->name;
+    //         } else {
+    //             return 'Hello ' . $this->default_name;
+    //         }
+    //     }
+    //     function getTime() {
+    //         $day = date('l');
+    //         $date = date("d.m.Y");
+    //         $time = date('H:i:s');
+    //         return 'Today is ' . $day . ' ' . $date . ' ' . $time;
+    //     }
+    // }
+    // $name = null;
+    // $my_class = new myClass();
+    // echo $my_class->hello($name) . '<br>';
+    // echo $my_class->getTime();
+    // echo phpinfo();
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -84,7 +109,7 @@
     </div>
     <!-- Modal -->
     <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered" role="document">
+    <!-- <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content" style="color: #333;">
         <div class="modal-header">
             <h5 class="modal-title" id="exampleModalLongTitle">Register</h5>
@@ -92,7 +117,7 @@
             <span aria-hidden="true">&times;</span>
             </button>
         </div>
-        <form action="register.php" method="POST" name="regForm">
+        <form action="autorisation.php" method="POST" name="regForm">
             <div class="modal-body">
                 <div class="myAlert"></div>
                 <div class="form-group">
@@ -104,10 +129,9 @@
                     <label for="password">Password</label>
                     <input type="password" class="form-control" id="password" name="password" placeholder="Password" required>
                 </div>
-                <!-- <div class="form-check">
-                    <input type="checkbox" class="form-check-input" id="exampleCheck1">
-                    <label class="form-check-label" for="exampleCheck1">Check me out</label>
-                </div> -->
+                <div class="form-check">
+                    
+                </div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -115,7 +139,8 @@
             </div>
         </form>
         </div>
-    </div>
+    </div> -->
+    <?php require_once('autorisation.php');?>
     </div>
 </header>
 <div class="main-contaner">
@@ -160,7 +185,7 @@
                             <div class="item"><i class="fa fa-calendar icons" aria-hidden="true"></i><b>Год:</b> <?=$book['b_year'];?></div>
                             <div class="item"><i class="fa fa-eye icons" aria-hidden="true"></i><b>Серия:</b> Автостопом по Галактике</div>
                             <div class="item"><i class="fa fa-file-text-o icons" aria-hidden="true"></i><b>Описание:</b> <?=substr($book['b_description'], 0, 255) . '...';?></div>
-                            <a href="<?='./' . translit($book[0]['b_title']) . '.html';?>" class="btn btn-success float-right" style="margin: 20px 0 20px 20px;">Подробнее</a>
+                            <a href="<?='./' . translit($book['b_title']) . '.html';?>" class="btn btn-success float-right" style="margin: 20px 0 20px 20px;">Подробнее</a>
                         </div>
                     </div>
                 <?php
