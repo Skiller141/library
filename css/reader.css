@@ -19,3 +19,19 @@
     display: inline-block;
     background: #eee;
 }
+
+.preloader {
+    position: fixed;
+    background: rgba(0, 0, 0, 0.8);
+    height: 100vh;
+    width: 100%;
+    top: 0;
+    left: 0;
+    z-index: 10000;
+}
+
+.preloader>h1 {
+    text-align: center;
+    margin-top: 300px;
+    color: #eee;
+}

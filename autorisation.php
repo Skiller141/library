@@ -1,18 +1,18 @@
 <?php
-echo '<pre>';
-print_r($_POST);
-echo '</pre>';
-$email_help = null;
-$form_check = null;
-$submit_innerText = null;
+// echo '<pre>';
+// print_r($_POST);
+// echo '</pre>';
+// $email_help = null;
+// $form_check = null;
+// $submit_innerText = null;
 $my_alert = null;
-if (isset($_POST['register'])) {
+if (isset($_POST['submit']) && $_POST['submit'] === 'register') {
     $email = $_POST['email'];
     $password = $_POST['password'];
 
-    $email_help = 'We\'ll never share your email with anyone else.';
-    $form_check = null;
-    $submit_innerText = 'Register';
+    // $email_help = 'We\'ll never share your email with anyone else.';
+    // $form_check = null;
+    // $submit_innerText = 'Register';
 
     $sql = "SELECT * FROM users WHERE email='$email'";
     $result = mysqli_query($conn, $sql);
@@ -26,20 +26,20 @@ if (isset($_POST['register'])) {
     }
 }
 
-if (isset($_POST['login'])) {
+if (isset($_POST['submit']) && $_POST['submit'] === 'login') {
     $email = $_POST['email'];
     $password = $_POST['password'];
 
-    $email_help = '';
-    $form_check = '
-        <div class="form-check">
-            <input type="checkbox" class="form-check-input" id="dropdownCheck">
-            <label class="form-check-label" for="dropdownCheck">Remember me</label>
-            <hr>
-            <a class="" href="#">New around here? Sign up</a> | <a class="" href="#">Forgot password?</a>   
-        </div>
-    ';
-    $submit_innerText = 'Login';
+    // $email_help = '';
+    // $form_check = '
+    //     <div class="form-check">
+    //         <input type="checkbox" class="form-check-input" id="dropdownCheck">
+    //         <label class="form-check-label" for="dropdownCheck">Remember me</label>
+    //         <hr>
+    //         <a class="" href="#">New around here? Sign up</a> | <a class="" href="#">Forgot password?</a>   
+    //     </div>
+    // ';
+    // $submit_innerText = 'Login';
 
     $sql = "SELECT * FROM users WHERE email='$email'";
     $result = mysqli_query($conn, $sql);
@@ -66,32 +66,36 @@ if (isset($_POST['login'])) {
 }
 ?>
 
-<div class="modal-dialog modal-dialog-centered" role="document">
-    <div class="modal-content" style="color: #333;">
-    <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLongTitle"><?=$submit_innerText?></h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-        <span aria-hidden="true">&times;</span>
-        </button>
-    </div>
-    <form action="" method="POST" name="autorisationForm">
-        <div class="modal-body">
-            <?=$my_alert?>
-            <div class="form-group">
-                <label for="email">Email address</label>
-                <input type="email" class="form-control" id="email" name="email" aria-describedby="emailHelp" placeholder="Enter email" required>
-                <small id="emailHelp" class="form-text text-muted"><?=$email_help?></small>
-            </div>
-            <div class="form-group">
-                <label for="password">Password</label>
-                <input type="password" class="form-control" id="password" name="password" placeholder="Password" required>
-            </div>
-            <?=$form_check?>
+<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content" style="color: #333;">
+        <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLongTitle"></h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+            </button>
         </div>
-        <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-            <button type="submit" class="btn btn-primary" id="submit" name="submit"><?=$submit_innerText?></button>
+        <form action="" method="POST" name="autorisationForm">
+            <div class="modal-body">
+                <?=$my_alert?>
+                <div class="form-group">
+                    <label for="email">Email address</label>
+                    <input type="email" class="form-control" id="email" name="email" aria-describedby="emailHelp" placeholder="Enter email" required>
+                    <small id="emailHelp" class="form-text text-muted"></small>
+                </div>
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" class="form-control" id="password" name="password" placeholder="Password" required>
+                </div>
+                <div class="form-check">
+
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="submit" class="btn btn-primary" id="submit" name="submit"></button>
+            </div>
+        </form>
         </div>
-    </form>
     </div>
 </div>

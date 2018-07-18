@@ -105,22 +105,23 @@ console.log(reduce);
 // });
 
 document.querySelector('#loginBtn').addEventListener('click', () => {
-    // document.querySelector('#exampleModalLongTitle').innerHTML = 'Login';
-    // document.querySelector('#emailHelp').innerHTML = '';
-    // document.querySelector('#submitRegister').innerHTML = 'Login';
-    // document.querySelector('.form-check').innerHTML = `
-    //     <input type="checkbox" class="form-check-input" id="dropdownCheck">
-    //     <label class="form-check-label" for="dropdownCheck">Remember me</label>
-    //     <hr>
-    //     <a class="" href="#">New around here? Sign up</a> | <a class="" href="#">Forgot password?</a>
-    // `;
+    document.querySelector('#exampleModalLongTitle').innerHTML = 'Login';
+    document.querySelector('#emailHelp').innerHTML = '';
+    document.querySelector('#submit').innerHTML = 'Login';
+    document.querySelector('.form-check').innerHTML = `
+        <input type="checkbox" class="form-check-input" id="dropdownCheck">
+        <label class="form-check-label" for="dropdownCheck">Remember me</label>
+        <hr>
+        <a class="" href="#">New around here? Sign up</a> | <a class="" href="#">Forgot password?</a>
+    `;
     document.forms['autorisationForm'].querySelector('#submit').name = 'login';
 });
 
 document.querySelector('#registerBtn').addEventListener('click', () => {
-    // document.querySelector('#exampleModalLongTitle').innerHTML = 'Resiter';
-    // document.querySelector('#emailHelp').innerHTML = 'We\'ll never share your email with anyone else.';
-    // document.querySelector('#submitRegister').innerHTML = 'Register';
+    document.querySelector('#exampleModalLongTitle').innerHTML = 'Resiter';
+    document.querySelector('#emailHelp').innerHTML = 'We\'ll never share your email with anyone else.';
+    document.querySelector('#submit').innerHTML = 'Register';
+    document.querySelector('.form-check').innerHTML = '';
     document.forms['autorisationForm'].querySelector('#submit').name = 'register';
 });
 

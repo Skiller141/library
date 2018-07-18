@@ -47,10 +47,10 @@ if (isset($_POST['submit'])) {
                 )";
 		if (mysqli_query($conn, $sql)) {
             echo "New record created successfully<br>";
-            $htaccess = fopen('../.htaccess', 'a');
-            fwrite($htaccess, 'RewriteRule ^admin/' . translit($title) . '.html$ admin/index.php?edit=' . $id . PHP_EOL);
-            fwrite($htaccess, 'RewriteRule ^' . translit($title) . '.html$ full.php?id=' . $id . PHP_EOL);
-            fclose($htaccess);
+            // $htaccess = fopen('../.htaccess', 'a');
+            // fwrite($htaccess, 'RewriteRule ^admin/' . translit($title) . '.html$ admin/index.php?edit=' . $id . PHP_EOL);
+            // fwrite($htaccess, 'RewriteRule ^' . translit($title) . '.html$ full.php?id=' . $id . PHP_EOL);
+            // fclose($htaccess);
             header('Location: all-books');
 		} else {
 			echo "Error: " . $sql . "<br>" . mysqli_error($conn);

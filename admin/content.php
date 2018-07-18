@@ -1,7 +1,7 @@
 <div class="out">
 <?php
 
-if (isset($_GET['p']) == 'all') {
+if (isset($_GET['all'])) {
 	echo '<h1 class="aTitle">All books</h1>';
 	if (count($myData) == 0) {
 		echo '<h3>Not Found!</h3>';
@@ -24,7 +24,7 @@ if (isset($_GET['p']) == 'all') {
     }  
 }
 
-if (isset($_GET['book']) == 'add') {
+if (isset($_GET['add'])) {
 	?>
 	<h1 class="aTitle">Add book</h1>
 	<form action="upload.php" method="post" id="addBook" name="addBook">

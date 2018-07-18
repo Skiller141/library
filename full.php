@@ -1,9 +1,15 @@
 <?php
-if (isset($_GET['id'])){
-    require_once('connect.php');
-    require_once('functions.php');
+require_once('connect.php');
+require_once('functions.php');
 
+if (isset($_GET['id'])){
     $id = $_GET['id'];
+    // $b_title = $_GET['b_title'];
+    // echo $id;
+    // echo $b_title;
+    // echo '<pre>';
+    // print_r($_GET);
+    // echo '</pre>';
     $myData = db_select_func($conn, "SELECT * FROM books WHERE id='$id'");
     $myCat = db_select_func($conn, "SELECT * FROM category WHERE id='$id'");
     
@@ -12,6 +18,12 @@ if (isset($_GET['id'])){
         $cat_string .= '<a href="category.php?cat=' . $myCat[$i]['b_category'] . '">' . $myCat[$i]['b_category'] . '</a>, ';
     }
     $cat_string = substr($cat_string, 0, strrpos($cat_string, ','));
+
+    // echo '<pre>';
+    // print_r($myData);
+    // echo '</pre>';
+} else {
+    echo 'err';
 }
 ?>
 
@@ -28,7 +40,6 @@ if (isset($_GET['id'])){
     <link rel="stylesheet" href="css/nav.css">
 </head>
 <body>
-    <?php require_once('header.php'); ?>
     <div class="main-wrap col-md-10">
         <div class="mycard col-md-12">
             <div class="row">
