@@ -55,7 +55,11 @@
 <body>
 <header class="header">
     <div class="header-column title"><?=$settings[0]['title']?></div>
-    <div class="header-column search">Search</div>
+    <div class="header-column search">
+        <form action="search.php" method="get" style="margin-top: 10px;">
+            <input type="text" name="search" id="search" placeholder="search" style="margin-right: 10px; width: 300px; padding: 5px;"><button type="submit" class="btn btn-secondary" name='searchSubmit'>Search</button>
+        </form>
+    </div>
     <div class="header-column user">
         <button type="button" class="btn btn-outline-warning" data-toggle="modal" data-target="#exampleModalCenter" id="loginBtn" style="margin: 10px 0;">
         Login

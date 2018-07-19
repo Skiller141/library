@@ -32,7 +32,7 @@ if (isset($_GET['id'])) {
     <link href="css/reader.css" rel="stylesheet">
 </head>
 <body>
-    <div class="preloader"><h1>Loading...</h1></div>
+    <div class="preloader"><img src="img/preloader.svg"></div>
     <div class="main-wrapper">
         <div class="chapters"></div>
         <div class="content col-md-8"><?php echo nl2br(file_get_contents('uploads/Lukyanenko_Sergey_Spektr.txt')); ?></div>
